@@ -5,18 +5,12 @@
 (function ($, Drupal, CKEDITOR) {
   Drupal.behaviors.ucsfpharmacy_drimage = {
     attach: function attach(context) {
-    	for(var i in CKEDITOR.instances) {
-	    	CKEDITOR.instances[i].on("instanceReady", function() {
-	      	setTimeout(function() {
-		        Drupal.drimage.init(CKEDITOR.instances[i].document.$);
-		      }, 500);
-	    	});
-	    	CKEDITOR.instances[i].on("focus", function() {
-	      	setTimeout(function() {
-		        Drupal.drimage.init(CKEDITOR.instances[i].document.$);
-		      }, 500);
-	    	});
-	    }
-	  }
+      CKEDITOR.on('instanceCreated', function(event) {
+        var editor = event.editor;
+        editor.on('unlockSnapshot', function() {
+          Drupal.drimage.init(editor.document.$);
+        });
+      });
+    }
   };
 })(jQuery, Drupal, CKEDITOR);
