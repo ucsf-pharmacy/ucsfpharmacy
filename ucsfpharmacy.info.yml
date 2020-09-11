@@ -1,5 +1,5 @@
-name: UCSF Pharmacy Modifications
+name: UCSF Pharmacy Mods
 type: module
-description: "UCSF School of Pharmacy general modifications."
+description: "Customizations for UCSF Pharmacy"
 core_version_requirement: ^8.8 || ^9
 
