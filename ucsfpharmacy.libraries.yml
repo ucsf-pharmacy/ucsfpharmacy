@@ -1,0 +1,14 @@
+drimage:
+  js:
+    js/ucsfpharmacy.drimage.js: {}
+  dependencies:
+    - core/jquery
+    - core/drupal
+    - core/ckeditor
+    - drimage/drimage
+
+media:
+  css:
+    theme:
+      css/media.css: {}
+
