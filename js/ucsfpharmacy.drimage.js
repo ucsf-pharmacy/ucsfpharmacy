@@ -7,11 +7,11 @@
     attach: function attach(context) {
       CKEDITOR.on('instanceCreated', function(event) {
         var editor = event.editor;
-        editor.on('dataReady', function() {
-          if(editor.document) {
-            Drupal.drimage.init(editor.document.$);
-          }
-        });
+        // editor.on('dataReady', function() {
+        //   if(editor.document) {
+        //     Drupal.drimage.init(editor.document.$);
+        //   }
+        // });
         editor.on('unlockSnapshot', function() {
           if(editor.document) {
             Drupal.drimage.init(editor.document.$);
