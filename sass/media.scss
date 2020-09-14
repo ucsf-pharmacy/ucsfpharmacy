@@ -1,0 +1,73 @@
+$sizes: (
+	"100" : 100%
+	,"75" : 75%
+	,"66" : 66.66%
+	,"50" : 50%
+	,"33" : 33.33%
+	,"25" : 25%
+	,"16" : 16.66%
+);
+
+$horiz-space-between-floated-image-and-wrapped-text: 8px;
+$bottom-margin-when-floated: 8px;
+
+@each $name, $size in $sizes {
+	.size-#{$name}{
+		max-width: $size;
+	}
+	.cke_widget_wrapper:hover>.cke_widget_element[data-align=right][data-size="#{$name}"]+.cke_widget_drag_handler_container{
+		left: calc( 100% - #{$size} + 3px ) !important; // no way around having !important here since CKE inlines the styles we don't want
+	}
+}
+
+.cke_editable img {
+	max-width: 100%;
+	height: auto;
+}
+
+figure.caption-drupal-media
+{
+  margin-block-start: 0;
+  margin-block-end: 0;
+	margin-inline-start: 0;
+	margin-inline-end: 0;
+	figcaption{
+		background-color: #ededee;
+	  padding: 2px 4px;
+	}
+	.media-library-item__edit { // edit button
+	  position: absolute;
+	  top: 2px;
+	  right: 2px;
+	}
+	&.align-left{
+	  margin: 0 $horiz-space-between-floated-image-and-wrapped-text $bottom-margin-when-floated 0;
+	}
+	&.align-right{
+	  margin: 0 0 $bottom-margin-when-floated $horiz-space-between-floated-image-and-wrapped-text;
+	}
+}
+.cke_widget_wrapper{
+	&>.cke_widget_drag_handler_container{
+		opacity: 1;
+		background-color: #ffffff !important;
+		top: 3px !important; // no way around having !important here since CKE inlines the styles we don't want
+	}
+	&:hover{// no way around having !important here since CKE inlines the styles we don't want
+		&>.cke_widget_element{
+			outline: none !important;
+		}
+		& .drimage img{
+	    outline: 2px solid #ffd25c;
+	  }
+		&>.cke_widget_drag_handler_container{
+			top: 2px !important;
+		}
+		&>.cke_widget_element[data-align=left]+.cke_widget_drag_handler_container{
+			left: 2px !important;
+		}
+		&>.cke_widget_element[data-align=right]+.cke_widget_drag_handler_container{
+			top: 2px !important;
+		}
+	}
+}
