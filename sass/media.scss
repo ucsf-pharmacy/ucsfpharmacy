@@ -49,11 +49,11 @@ figure.caption-drupal-media:not(.size-100){
 	  margin: 0 0 $bottom-margin-when-floated $horiz-space-between-floated-image-and-wrapped-text;
 	}
 }
-.cke_widget_wrapper{ // no way around having !important here since CKE inlines the styles we don't want
+.cke_widget_wrapper{
 	&>.cke_widget_drag_handler_container{
 		opacity: 1;
 		background-color: #ffffff !important;
-		top: 3px !important;
+		top: 3px !important; // no way around having !important here since CKE inlines the styles we don't want
 	}
 	&:hover{// no way around having !important here since CKE inlines the styles we don't want
 		&>.cke_widget_element{
