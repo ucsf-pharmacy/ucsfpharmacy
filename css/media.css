@@ -82,35 +82,37 @@ figure.caption-drupal-media figcaption {
   padding: 2px 4px;
 }
 
-/* line 42, ../../../../../Users/frankfarm/Documents/Git/d8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
-figure.caption-drupal-media:not(.size-100).align-left {
-  margin: 0 8px 8px 0;
+/* line 44, ../../../../../Users/frankfarm/Documents/Git/d8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
+figure.caption-drupal-media:not(.size-100).align-left
+, .media:not(.size-100).align-left {
+  margin: 0 32px 8px 0;
 }
 
-/* line 45, ../../../../../Users/frankfarm/Documents/Git/d8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
-figure.caption-drupal-media:not(.size-100).align-right {
-  margin: 0 0 8px 8px;
+/* line 47, ../../../../../Users/frankfarm/Documents/Git/d8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
+figure.caption-drupal-media:not(.size-100).align-right
+, .media:not(.size-100).align-right {
+  margin: 0 0 8px 32px;
 }
 
-/* line 55, ../../../../../Users/frankfarm/Documents/Git/d8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
+/* line 57, ../../../../../Users/frankfarm/Documents/Git/d8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
 .cke_editable img {
   max-width: 100%;
   height: auto;
 }
 
-/* line 61, ../../../../../Users/frankfarm/Documents/Git/d8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
+/* line 63, ../../../../../Users/frankfarm/Documents/Git/d8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
 .media-library-item__edit {
   position: absolute;
   top: 2px;
   right: 2px !important;
 }
 
-/* line 65, ../../../../../Users/frankfarm/Documents/Git/d8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
+/* line 67, ../../../../../Users/frankfarm/Documents/Git/d8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
 .media-library-item__edit:hover {
   cursor: pointer;
 }
 
-/* line 71, ../../../../../Users/frankfarm/Documents/Git/d8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
+/* line 73, ../../../../../Users/frankfarm/Documents/Git/d8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
 .cke_widget_wrapper > .cke_widget_drag_handler_container {
   opacity: 1;
   background-color: #ffffff !important;
