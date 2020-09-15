@@ -38,7 +38,9 @@
 			}
 		}
 
-		figure.caption-drupal-media:not(.size-100){
+		figure.caption-drupal-media:not(.size-100) // this handles the case with a caption
+		,.media:not(.size-100) // this handles the case without a caption
+		{
 			&.align-left{
 			  margin: 0 $horiz-space-between-floated-image-and-wrapped-text $bottom-margin-when-floated 0;
 			}
