@@ -85,7 +85,11 @@ figure.caption-drupal-media figcaption {
 /* line 44, ../../../../../Users/frankfarm/Documents/Git/d8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
 figure.caption-drupal-media:not(.size-100).align-left
 , .media:not(.size-100).align-left {
+<<<<<<< HEAD
   margin: 0 32px 8px 0;
+=======
+  margin: 0 8px 8px 0;
+>>>>>>> 2a0863684c2e8100c398e0629a8f4d30d9e6df29
 }
 
 /* line 47, ../../../../../Users/frankfarm/Documents/Git/d8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
