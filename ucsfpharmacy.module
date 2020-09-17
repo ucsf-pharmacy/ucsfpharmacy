@@ -7,6 +7,7 @@ use Drupal\editor\Entity\Editor;
  * Implements hook_form_alter().
  */
 function ucsfpharmacy_form_alter(&$form, $form_state, $form_id) {
+
   if($form_id == 'editor_media_dialog') {
     $media_embed_element = $form_state->get('media_embed_element');
     $media = \Drupal::service('entity.repository')->loadEntityByUuid('media', $media_embed_element['data-entity-uuid']);
@@ -34,6 +35,14 @@ function ucsfpharmacy_form_alter(&$form, $form_state, $form_id) {
       '#default_value' => empty($media_embed_element['data-size']) ? '100' : $media_embed_element['data-size'],
       '#weight' => 100,
     );
+
+    $form['align']['#default_value'] = 'none';
+    unset($form['align']['#options']['center']);
+
+    $bundle = $media->bundle();
+    if($bundle != 'image') {
+      unset($form['view_mode']);
+    }
   }
 
   if($form_id == 'node_page_edit_form') {
@@ -54,3 +63,28 @@ function ucsfpharmacy_ckeditor_css_alter(array &$css, Editor $editor) {
 function ucsfpharmacy_preprocess_page(&$variables) {
   $variables['#attached']['library'][] =  'ucsfpharmacy/media';
 }
+
+/**
+ * Implements hook_theme_suggestions_HOOK_alter() for drimage_formatter.
+ *
+ * Switch to plain image_formatter if filename is SVG.
+ *
+ * @see ucsfpharmacy_preprocess_image_formatter().
+ */
+function ucsfpharmacy_theme_suggestions_drimage_formatter_alter(&$suggestions, $variables) {
+  if(substr($variables['data']['filename'], -4) === '.svg') {
+    $suggestions[] = 'image_formatter';
+  }
+}
+
+/**
+ * Implements template_preprocess_image_formatter().
+ *
+ * Use no image style (original/none) if filename is SVG.
+ */
+function ucsfpharmacy_preprocess_image_formatter(&$variables) {
+  if(substr($variables['data']['filename'], -4) === '.svg') {
+    $variables['image_style'] = '';
+  }
+}
+
