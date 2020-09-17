@@ -98,16 +98,16 @@ figure.caption > article:first-child {
   left: calc( 100% - 16.66%) !important;
 }
 
-/* line 71, ../../../../../Users/frankfarm/Documents/Git/d8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
-.media .field--name-field-media-image:hover {
-  outline: 2px solid #ffd25c;
-  cursor: default;
-}
-
-/* line 76, ../../../../../Users/frankfarm/Documents/Git/d8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
+/* line 72, ../../../../../Users/frankfarm/Documents/Git/d8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
 .cke_editable img {
   max-width: 100%;
   height: auto;
+}
+
+/* line 76, ../../../../../Users/frankfarm/Documents/Git/d8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
+.cke_editable .media .field--name-field-media-image:hover {
+  outline: 2px solid #ffd25c;
+  cursor: default;
 }
 
 /* line 82, ../../../../../Users/frankfarm/Documents/Git/d8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
