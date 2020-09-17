@@ -1,75 +1,111 @@
-$sizes: (
-	"100" : 100%
-	,"75" : 75%
-	,"66" : 66.66%
-	,"50" : 50%
-	,"33" : 33.33%
-	,"25" : 25%
-	,"16" : 16.66%
-);
+//  ------------------------------------------------------------------
+//  declarations
 
-$horiz-space-between-floated-image-and-wrapped-text: 8px;
-$bottom-margin-when-floated: 8px;
+    $sizes: (
+      "100" : 100%
+      ,"75" : 75%
+      ,"66" : 66.66%
+      ,"50" : 50%
+      ,"33" : 33.33%
+      ,"25" : 25%
+      ,"16" : 16.66%
+    );
 
-@each $name, $size in $sizes {
-	.size-#{$name}{
-		max-width: $size;
-	}
-	.cke_widget_wrapper:hover>.cke_widget_element[data-align=right][data-size="#{$name}"]+.cke_widget_drag_handler_container{
-		left: calc( 100% - #{$size} + 3px ) !important; // no way around having !important here since CKE inlines the styles we don't want
-	}
-}
+    $horiz-space-between-floated-image-and-wrapped-text: 32px;
+    $bottom-margin-when-floated: 8px;
 
-.cke_editable img {
-	max-width: 100%;
-	height: auto;
-}
 
-figure.caption-drupal-media
-{
-  margin-block-start: 0;
-  margin-block-end: 0;
-	margin-inline-start: 0;
-	margin-inline-end: 0;
-	figcaption{
-		background-color: #ededee;
-	  padding: 2px 4px;
-	}
-	.media-library-item__edit { // edit button
-	  position: absolute;
-	  top: 2px;
-	  right: 2px;
-	}
-}
-figure.caption-drupal-media:not(.size-100){
-	&.align-left{
-	  margin: 0 $horiz-space-between-floated-image-and-wrapped-text $bottom-margin-when-floated 0;
-	}
-	&.align-right{
-	  margin: 0 0 $bottom-margin-when-floated $horiz-space-between-floated-image-and-wrapped-text;
-	}
-}
-.cke_widget_wrapper{
-	&>.cke_widget_drag_handler_container{
-		opacity: 1;
-		background-color: #ffffff !important;
-		top: 3px !important; // no way around having !important here since CKE inlines the styles we don't want
-	}
-	&:hover{// no way around having !important here since CKE inlines the styles we don't want
-		&>.cke_widget_element{
-			outline: none !important;
-		}
-		& .drimage img{
-	    outline: 2px solid #ffd25c;
-	  }
-		&>.cke_widget_drag_handler_container{
-			top: 2px !important;
-		}
-		&>.cke_widget_element[data-align=left]+.cke_widget_drag_handler_container{
-			left: 2px !important;
-		}
-		&>.cke_widget_element[data-align=right]+.cke_widget_drag_handler_container{
-			top: 2px !important;
-		}
-	}
-}
+
+//  ------------------------------------------------------------------
+//  needed inside and outside the wysiwyg
+
+    @each $name, $size in $sizes {
+      .size-#{$name} {
+        max-width: $size;
+      }
+    }
+
+    //  needed only for images with caption
+    //
+    figure.caption { // this handles the case with a caption
+      figcaption{
+        background-color: #ededee;
+        padding: 2px 4px;
+      }
+    }
+
+    //  needed for images with and without caption
+    //
+    figure.caption // this handles the case with a caption
+    ,.media // this handles the case without a caption
+    {
+      margin-inline-start: 0;
+      margin-inline-end: 0;
+      &:not(.size-100)
+      {
+        &.align-left{
+          margin: 0 $horiz-space-between-floated-image-and-wrapped-text $bottom-margin-when-floated 0;
+        }
+        &.align-right{
+          margin: 0 0 $bottom-margin-when-floated $horiz-space-between-floated-image-and-wrapped-text;
+        }
+      }
+    }
+    figure.caption>article:first-child{
+      margin-block-end: 0;
+    }
+
+
+
+//  ------------------------------------------------------------------
+//  needed only inside the wysiwyg
+
+    @each $name, $size in $sizes {
+      .cke_widget_wrapper {
+        &>.cke_widget_element[data-align=right][data-size="#{$name}"]+.cke_widget_drag_handler_container{
+          left: calc( 100% - #{$size} ) !important; // no way around having !important here since CKE inlines the styles we don't want
+        }
+      }
+    }
+
+    .cke_editable{ // make very large images fit inside the wysiwyg
+      img {
+        max-width: 100%;
+        height: auto;
+      }
+      .media .field--name-field-media-image:hover {
+        outline: 2px solid #ffd25c;
+        cursor: default;
+      }
+    }
+
+    .media-library-item__edit { // position the edit button at the top right of the image
+      position: absolute;
+      top: 2px;
+      right: 2px !important; // this is set to 10px in ckeditor.drupalmedia.css which loads after this file
+      &:hover{
+        cursor: pointer;
+      }
+    }
+
+    .cke_widget_wrapper{
+      &>.cke_widget_drag_handler_container{ // resolves the poor contrast of the translucent png provided by CKE
+        opacity: 1;
+        background-color: #ffffff !important;
+      }
+    }
+
+    figure.caption { // this handles the case with a caption
+      margin-block-start: 0;
+      margin-block-end: 0;
+    }
+
+
+
+//  ------------------------------------------------------------------
+//  needed only outside the wysiwyg
+
+    .media { // this handles the case with a caption
+      margin-block-start: 1em;
+      margin-block-end: 1em;
+    }
