@@ -2,6 +2,10 @@
 
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\editor\Entity\Editor;
+use Drupal\file_entity\Entity\FileEntity;
+use Drupal\Core\Entity\Display\EntityFormDisplayInterface;
+use Drupal\Core\Field\FieldDefinitionInterface;
+use Drupal\image\Entity\ImageStyle;
 
 /**
  * Implements hook_form_alter().
@@ -48,6 +52,11 @@ function ucsfpharmacy_form_alter(&$form, $form_state, $form_id) {
   if($form_id == 'node_page_edit_form') {
     $form['#attached']['library'][] = 'ucsfpharmacy/drimage';
   }
+
+  // move published checkbox into revision information vertical pane
+  if(!empty($form['status']) && empty($form['status']['#group']) &&  !empty($form['revision_information'])) {
+  	$form['status']['#group'] = 'revision_information';
+  }
 }
 
 /**
@@ -65,26 +74,17 @@ function ucsfpharmacy_preprocess_page(&$variables) {
 }
 
 /**
- * Implements hook_theme_suggestions_HOOK_alter() for drimage_formatter.
- *
- * Switch to plain image_formatter if filename is SVG.
- *
- * @see ucsfpharmacy_preprocess_image_formatter().
+ * Implements hook_drimage_image_style_alter().
  */
-function ucsfpharmacy_theme_suggestions_drimage_formatter_alter(&$suggestions, $variables) {
-  if(substr($variables['data']['filename'], -4) === '.svg') {
-    $suggestions[] = 'image_formatter';
-  }
+function ucsfpharmacy_drimage_image_style_alter(&$style) {
+  $configuration = [
+    'id' => 'crop_crop',
+    'data' => [
+      'crop_type' => 'custom',
+    ],
+    'uuid' => NULL,
+    'weight' => -50,
+  ];
+  $effect = \Drupal::service('plugin.manager.image.effect')->createInstance($configuration['id'], $configuration);
+  $style->addImageEffect($effect->getConfiguration());
 }
-
-/**
- * Implements template_preprocess_image_formatter().
- *
- * Use no image style (original/none) if filename is SVG.
- */
-function ucsfpharmacy_preprocess_image_formatter(&$variables) {
-  if(substr($variables['data']['filename'], -4) === '.svg') {
-    $variables['image_style'] = '';
-  }
-}
-
