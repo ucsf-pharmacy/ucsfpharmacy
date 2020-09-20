@@ -28,11 +28,11 @@ class FilterSize extends FilterBase {
       $dom = Html::load($text);
       $xpath = new \DOMXPath($dom);
       foreach ($xpath->query('//*[@data-size]') as $node) {
-        // Read the data-align attribute's value, then delete it.
+        // Read the data-size attribute's value, then delete it.
         $size = $node->getAttribute('data-size');
         $node->removeAttribute('data-size');
 
-        // If one of the allowed alignments, add the corresponding class.
+        // Add the corresponding class.
         $classes = $node->getAttribute('class');
         $classes = (strlen($classes) > 0) ? explode(' ', $classes) : [];
         $classes[] = 'size-' . $size;

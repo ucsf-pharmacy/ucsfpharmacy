@@ -1,0 +1,24 @@
+<?php
+
+/**
+ * @file
+ * DrImage installation and update functions.
+ */
+
+/**
+ * Implements hook_install().
+ */
+function drimage2_install() {
+  \Drupal::configFactory()->getEditable('drimage2.settings')
+    // Browser are able to scale images with a small difference nicely.
+    ->set('threshold', 400)
+    // 1° of transformation is not visible.
+    ->set('ratio_distortion', 60)
+    // Assuming a mobile device as the min.
+    ->set('upscale', 400)
+    // Assuming a HD resolution width 2x multiplier as the max.
+    ->set('downscale', 6000)
+    ->set('multiplier', 1)
+    ->set('lazy_offset', 100)
+    ->save();
+}

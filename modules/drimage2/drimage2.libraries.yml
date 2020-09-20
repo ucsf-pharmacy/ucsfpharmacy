@@ -1,0 +1,18 @@
+drimage2:
+  css:
+    component:
+      css/drimage.css: {}
+    state:
+      css/drimage_loader.css: {}
+  js:
+    js/drimage2.js: {}
+  dependencies:
+    - core/drupal
+    - core/classList
+
+ckeditor:
+  js:
+    js/drimage2_ckeditor.js: {}
+  dependencies:
+    - core/ckeditor
+    - drimage2/drimage2

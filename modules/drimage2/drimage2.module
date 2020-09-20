@@ -1,0 +1,33 @@
+<?php
+
+/**
+ * @file
+ * DrImage core functions.
+ */
+
+/**
+ * Implements hook_theme().
+ */
+function drimage2_theme() {
+  return [
+    'drimage2_formatter' => [
+      'variables' => [
+        'item' => NULL,
+        'item_attributes' => NULL,
+        'image_style' => NULL,
+        'url' => NULL,
+        'alt' => NULL,
+        'width' => NULL,
+        'height' => NULL,
+        'data' => NULL,
+      ],
+    ],
+  ];
+}
+
+/**
+ * Implements hook_form_BASE_FORM_ID_alter() for node_form.
+ */
+function drimage2_form_node_form_alter(&$form, $form_state) {
+  $form['#attached']['library'][] = 'drimage2/ckeditor';
+}

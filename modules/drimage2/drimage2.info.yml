@@ -1,0 +1,9 @@
+name: Drimage2
+type: module
+description: "Image formatter that will generate image styles on the fly on the front end."
+core_version_requirement: ^8.8 || ^9
+dependencies:
+  - drupal:crop
+  - drupal:image
+configure: drimage2.settings
+

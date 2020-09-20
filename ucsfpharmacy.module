@@ -45,12 +45,8 @@ function ucsfpharmacy_form_alter(&$form, $form_state, $form_id) {
 
     $bundle = $media->bundle();
     if($bundle != 'image') {
-      unset($form['view_mode']);
+      // unset($form['view_mode']);
     }
-  }
-
-  if($form_id == 'node_page_edit_form') {
-    $form['#attached']['library'][] = 'ucsfpharmacy/drimage';
   }
 
   // move published checkbox into revision information vertical pane
@@ -71,20 +67,4 @@ function ucsfpharmacy_ckeditor_css_alter(array &$css, Editor $editor) {
  */
 function ucsfpharmacy_preprocess_page(&$variables) {
   $variables['#attached']['library'][] =  'ucsfpharmacy/media';
-}
-
-/**
- * Implements hook_drimage_image_style_alter().
- */
-function ucsfpharmacy_drimage_image_style_alter(&$style) {
-  $configuration = [
-    'id' => 'crop_crop',
-    'data' => [
-      'crop_type' => 'custom',
-    ],
-    'uuid' => NULL,
-    'weight' => -50,
-  ];
-  $effect = \Drupal::service('plugin.manager.image.effect')->createInstance($configuration['id'], $configuration);
-  $style->addImageEffect($effect->getConfiguration());
 }
