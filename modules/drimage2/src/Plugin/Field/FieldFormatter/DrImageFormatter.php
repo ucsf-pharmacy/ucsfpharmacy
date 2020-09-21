@@ -120,10 +120,8 @@ class DrImageFormatter extends ImageFormatter {
     $element['crop_type'] = [
       '#type' => 'select',
       '#title' => $this->t('Crop Type'),
-      '#default_value' => 0,
+      '#default_value' => $this->getSetting('crop_type'),
       '#options' => $this->imageHandlingOptions(),
-      // '#description' => $this->t(''),
-      '#required' => TRUE,
     ];
 
     return $element;

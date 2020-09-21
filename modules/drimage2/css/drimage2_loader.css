@@ -1,4 +1,4 @@
-.drimage.is-loading {
+.drimage2.is-loading {
   opacity: 0.8;
   animation: color-change 2s infinite alternate ease-in-out;
 }
@@ -11,6 +11,6 @@
   }
 }
 
-.drimage {
+.drimage2 {
   animation: none;
 }

@@ -9,7 +9,9 @@
         var editor = event.editor;
         editor.on('unlockSnapshot', function() {
           if(editor.document) {
-            setTimeout(Drupal.drimage2.init(editor.document.$), 300);
+            setTimeout(function() {
+              Drupal.drimage2.init(editor.document.$);
+            }, 500);
           }
         });
       });

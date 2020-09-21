@@ -1,4 +1,4 @@
-.drimage {
+.drimage2 {
   height: inherit;
   line-height: 0;
   font-size: 0;
@@ -7,16 +7,16 @@
   border: 0;
 }
 
-.drimage img {
+.drimage2 img {
   width: 100%;
   height: 100%;
 }
 
-.drimage.is-background-image {
+.drimage2.is-background-image {
   background-repeat: no-repeat;
 }
 
-.drimage.is-background-image > img {
+.drimage2.is-background-image > img {
   clip: rect(1px, 1px, 1px, 1px);
   overflow: hidden;
   height: 1px;

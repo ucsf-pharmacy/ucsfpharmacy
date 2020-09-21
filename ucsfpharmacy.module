@@ -40,12 +40,12 @@ function ucsfpharmacy_form_alter(&$form, $form_state, $form_id) {
       '#weight' => 100,
     );
 
-    $form['align']['#default_value'] = 'none';
-    unset($form['align']['#options']['center']);
+    // $form['align']['#default_value'] = 'none';
+    // unset($form['align']['#options']['center']);
 
     $bundle = $media->bundle();
     if($bundle != 'image') {
-      // unset($form['view_mode']);
+      unset($form['view_mode']);
     }
   }
 

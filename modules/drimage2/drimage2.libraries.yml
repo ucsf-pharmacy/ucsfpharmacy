@@ -1,9 +1,9 @@
 drimage2:
   css:
     component:
-      css/drimage.css: {}
+      css/drimage2.css: {}
     state:
-      css/drimage_loader.css: {}
+      css/drimage2_loader.css: {}
   js:
     js/drimage2.js: {}
   dependencies:

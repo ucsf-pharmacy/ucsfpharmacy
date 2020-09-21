@@ -106,7 +106,7 @@ class DrImageController extends ImageStyleDownloadController {
         'uuid' => NULL,
         'weight' => 0,
         'data' => [
-          'upscale' => TRUE,
+          'upscale' => FALSE,
           'width' => $requested_dimensions[0],
           'height' => NULL,
         ],
