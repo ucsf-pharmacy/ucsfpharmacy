@@ -11,7 +11,7 @@
           if(editor.document) {
             setTimeout(function() {
               Drupal.drimage2.init(editor.document.$);
-            }, 500);
+            }, 1000);
           }
         });
       });
