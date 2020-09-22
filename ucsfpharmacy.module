@@ -1,70 +1,87 @@
 <?php
 
+use Drupal\Core\Entity\Display\EntityFormDisplayInterface;
+use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\editor\Entity\Editor;
 use Drupal\file_entity\Entity\FileEntity;
-use Drupal\Core\Entity\Display\EntityFormDisplayInterface;
-use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\image\Entity\ImageStyle;
+use Drupal\media\OEmbed\Provider;
 
 /**
  * Implements hook_form_alter().
  */
 function ucsfpharmacy_form_alter(&$form, $form_state, $form_id) {
+	// Move published checkbox into revision information vertical pane.
+	if(!empty($form['status']) && empty($form['status']['#group']) &&  !empty($form['revision_information'])) {
+		$form['status']['#group'] = 'revision_information';
+	}
+}
 
-  if($form_id == 'editor_media_dialog') {
-    $media_embed_element = $form_state->get('media_embed_element');
-    $media = \Drupal::service('entity.repository')->loadEntityByUuid('media', $media_embed_element['data-entity-uuid']);
+/**
+ * Implements hook_form_FORM_ID_alter() for editor_media_dialog.
+ */
+function ucsfpharmacy_form_editor_media_dialog_alter(&$form, $form_state) {
+	$media_embed_element = $form_state->get('media_embed_element');
+	$media = \Drupal::service('entity.repository')->loadEntityByUuid('media', $media_embed_element['data-entity-uuid']);
 
-    $form['media_item_edit_link'] = [
-      '#type' => 'item',
-      // '#title' => t('title'),
-      '#markup' => t('The options on this form apply only to this one instance (locally).<br />To edit global media item settings: <a target="_blank" href="/media/'.$media->id().'/edit">/media/'.$media->id().'/edit</a>.'),
-      '#weight' => -100,
-    ];
+	// Add media item edit link.
+	$form['media_item_edit_link'] = [
+		'#type' => 'item',
+		'#markup' => t('The options on this form apply only to this one instance (locally).<br />To edit global media item settings: <a target="_blank" href="/media/'.$media->id().'/edit">/media/'.$media->id().'/edit</a>.'),
+		'#weight' => -100,
+	];
 
-    $form['size'] = array(
-      '#title' => 'Size',
-      '#type' => 'select',
-      '#options' => [
-        '100' => '100%',
-        '75'  => '75%',
-        '66'  => '66.66%',
-        '50'  => '50%',
-        '33'  => '33.33%',
-        '25'  => '25%',
-        '16'  => '16.66%',
-      ],
-      '#parents' => ['attributes', 'data-size'],
-      '#default_value' => empty($media_embed_element['data-size']) ? '100' : $media_embed_element['data-size'],
-      '#weight' => 100,
-    );
+	// Add data-size filter options.
+	$form['size'] = array(
+		'#title' => 'Size',
+		'#type' => 'select',
+		'#options' => [
+			'100' => '100%',
+			'75'  => '75%',
+			'66'  => '66.66%',
+			'50'  => '50%',
+			'33'  => '33.33%',
+			'25'  => '25%',
+			'16'  => '16.66%',
+		],
+		'#parents' => ['attributes', 'data-size'],
+		'#default_value' => empty($media_embed_element['data-size']) ? '100' : $media_embed_element['data-size'],
+		'#weight' => 100,
+	);
 
-    // $form['align']['#default_value'] = 'none';
-    // unset($form['align']['#options']['center']);
+	// $form['align']['#default_value'] = 'none';
+	// unset($form['align']['#options']['center']);
 
-    $bundle = $media->bundle();
-    if($bundle != 'image') {
-      unset($form['view_mode']);
-    }
-  }
-
-  // move published checkbox into revision information vertical pane
-  if(!empty($form['status']) && empty($form['status']['#group']) &&  !empty($form['revision_information'])) {
-  	$form['status']['#group'] = 'revision_information';
-  }
+	$bundle = $media->bundle();
+	// Remove view mode options for anything but image type.
+	if($bundle != 'image') {
+		unset($form['view_mode']);
+	}
 }
 
 /**
  * Implements hook_ckeditor_css_alter().
  */
 function ucsfpharmacy_ckeditor_css_alter(array &$css, Editor $editor) {
-  $css[] = drupal_get_path('module', 'ucsfpharmacy') . '/css/media.css';
+	// Attach media custom css to ckeditor such as for data-size filter.
+	$css[] = drupal_get_path('module', 'ucsfpharmacy') . '/css/media.css';
 }
 
 /**
  * Implements template_preprocess_page().
  */
 function ucsfpharmacy_preprocess_page(&$variables) {
-  $variables['#attached']['library'][] =  'ucsfpharmacy/media';
+	// Attach media custom css such as for data-size filter.
+	$variables['#attached']['library'][] =  'ucsfpharmacy/media';
+}
+
+/**
+ * Implements hook_oembed_resource_url_alter().
+ */
+function ucsfpharmacy_oembed_resource_url_alter(&$parsed_url, $provider) {
+	// Always serve YouTube videos from youtube-nocookie.com.
+	if ($provider->getName() === 'YouTube') {
+		$parsed_url['path'] = str_replace('://youtube.com/', '://youtube-nocookie.com/', $parsed_url['path']);
+	}
 }

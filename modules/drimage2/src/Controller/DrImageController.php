@@ -101,18 +101,6 @@ class DrImageController extends ImageStyleDownloadController {
     // already created.
     try {
       $style = ImageStyle::create(['name' => $name, 'label' => $label]);
-      $configuration = [
-        'id' => 'image_scale',
-        'uuid' => NULL,
-        'weight' => 0,
-        'data' => [
-          'upscale' => FALSE,
-          'width' => $requested_dimensions[0],
-          'height' => NULL,
-        ],
-      ];
-      $effect = \Drupal::service('plugin.manager.image.effect')->createInstance($configuration['id'], $configuration);
-      $style->addImageEffect($effect->getConfiguration());
       // Add manual crop image effect if requested.
       if($requested_dimensions[2]) {
         $configuration = [
@@ -126,6 +114,18 @@ class DrImageController extends ImageStyleDownloadController {
         $effect = \Drupal::service('plugin.manager.image.effect')->createInstance($configuration['id'], $configuration);
         $style->addImageEffect($effect->getConfiguration());
       }
+      $configuration = [
+        'id' => 'image_scale',
+        'uuid' => NULL,
+        'weight' => 0,
+        'data' => [
+          'upscale' => FALSE,
+          'width' => $requested_dimensions[0],
+          'height' => NULL,
+        ],
+      ];
+      $effect = \Drupal::service('plugin.manager.image.effect')->createInstance($configuration['id'], $configuration);
+      $style->addImageEffect($effect->getConfiguration());
       $style->save();
       $styles[$name] = $style;
       $image_style = $styles[$name];
@@ -219,6 +219,7 @@ class DrImageController extends ImageStyleDownloadController {
       //usleep(1000000);
 
       $response = $this->deliver($request, $scheme, $image_style);
+
       $drimage_config = $this->config('drimage2.settings');
       $proxy_cache_maximum_age = $drimage_config->get('proxy_cache_maximum_age');
       if (!empty($proxy_cache_maximum_age)) {

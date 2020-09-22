@@ -8,7 +8,7 @@
     if (el.parentNode === null) {
       return null;
     }
-    if (el.parentNode.classList && el.parentNode.classList.contains('js-delay-drimage')) {
+    if (el.parentNode.classList && el.parentNode.classList.contains('js-delay-drimage2')) {
       return el.parentNode;
     }
     return Drupal.drimage2.findDelayParent(el.parentNode);
@@ -116,23 +116,15 @@
         || (rect.bottom + data.lazy_offset >= 0 && rect.bottom - data.lazy_offset <= (window.innerHeight || document.documentElement.clientHeight))) {
         if (isNaN(data.fid) === false && data.fid % 1 === 0 && Number(data.fid) > 0) {
           var size = Drupal.drimage2.size(el);
-          var w = Number(el.getAttribute('data-w'));
-          var h = Number(el.getAttribute('data-h'));
-          if (size[0] !== w || size[1] !== h) {
-            if (size[0] > 0) {
-              el.classList.add('is-loading');
-              el.setAttribute('data-w', size[0]);
-              el.setAttribute('data-h', size[1]);
-              var downloadingImage = new Image();
-              downloadingImage.onload = function () {
-                var img = el.querySelectorAll('img');
-                if (img.length > 0) {
-                  img[0].src = this.src;
-                }
-                el.classList.remove('is-loading');
-              };
-              downloadingImage.src = '/drimage2/' + size[0] + '/' + size[1] + '/' + data.crop_type + '/' + data.fid + '/' + encodeURIComponent(data.filename);
-            }
+          if (size[0] > 0) {
+            var downloadingImage = new Image();
+            downloadingImage.onload = function () {
+              var img = el.querySelectorAll('img');
+              if (img.length > 0) {
+                img[0].src = this.src;
+              }
+            };
+            downloadingImage.src = '/drimage2/' + size[0] + '/' + size[1] + '/' + data.crop_type + '/' + data.fid + '/' + encodeURIComponent(data.filename);
           }
         }
       }
