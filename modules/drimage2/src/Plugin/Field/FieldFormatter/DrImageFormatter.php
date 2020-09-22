@@ -179,6 +179,10 @@ class DrImageFormatter extends ImageFormatter {
       $elements[$delta]['#data']['original_height'] = $element['#item']->getValue()['height'];
       $elements[$delta]['#data']['original_source'] = file_url_transform_relative(file_create_url($files[$delta]->getFileUri()));
 
+      if (\Drupal::routeMatch()->getRouteName() == 'media.filter.preview') {
+        $elements[$delta]['#data']['media_preview'] = TRUE;
+      }
+
       // Unset the fallback image.
       unset($elements[$delta]['#image']);
     }
