@@ -4,8 +4,10 @@ use Drupal\Core\Entity\Display\EntityFormDisplayInterface;
 use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\editor\Entity\Editor;
+use Drupal\file\Entity\File;
 use Drupal\file_entity\Entity\FileEntity;
 use Drupal\image\Entity\ImageStyle;
+use Drupal\media\Entity\Media;
 use Drupal\media\OEmbed\Provider;
 
 /**
@@ -15,6 +17,23 @@ function ucsfpharmacy_form_alter(&$form, $form_state, $form_id) {
 	// Move published checkbox into revision information vertical pane.
 	if(!empty($form['status']) && empty($form['status']['#group']) &&  !empty($form['revision_information'])) {
 		$form['status']['#group'] = 'revision_information';
+	}
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter() for media_library_add_form_upload.
+ */
+function ucsfpharmacy_form_media_library_add_form_upload_alter(&$form, $form_state) {
+	// Show SVG preview thumbnail in modal add media form.
+	if(\Drupal::service('module_handler')->moduleExists('svg_image_field')) {
+		if($media = $form_state->get('media')) {
+			if($media[0]->getSource()->getMetadata($media[0], 'mimetype') == 'image/svg+xml') {
+				$form['media'][0]['preview']['thumbnail'] = [
+					"#theme" => "svg_image_field_formatter",
+	        "#uri" => $media[0]->get('field_media_svg')->entity->getFileUri(),
+	      ];
+			}
+		}
 	}
 }
 
