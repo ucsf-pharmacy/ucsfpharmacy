@@ -1,19 +1,15 @@
 <?php
 
-use Drupal\Core\Entity\Display\EntityFormDisplayInterface;
-use Drupal\Core\Field\FieldDefinitionInterface;
+use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Image\Image;
 use Drupal\editor\Entity\Editor;
-use Drupal\file\Entity\File;
-use Drupal\file_entity\Entity\FileEntity;
-use Drupal\image\Entity\ImageStyle;
-use Drupal\media\Entity\Media;
 use Drupal\media\OEmbed\Provider;
 
 /**
  * Implements hook_form_alter().
  */
-function ucsfpharmacy_form_alter(&$form, $form_state, $form_id) {
+function ucsfpharmacy_form_alter(&$form, FormStateInterface $form_state, $form_id) {
 	// Move published checkbox into revision information vertical pane.
 	if(!empty($form['status']) && empty($form['status']['#group']) &&  !empty($form['revision_information'])) {
 		$form['status']['#group'] = 'revision_information';
@@ -23,11 +19,12 @@ function ucsfpharmacy_form_alter(&$form, $form_state, $form_id) {
 /**
  * Implements hook_form_FORM_ID_alter() for media_library_add_form_upload.
  */
-function ucsfpharmacy_form_media_library_add_form_upload_alter(&$form, $form_state) {
-	// Show SVG preview thumbnail in modal add media form.
-	if(\Drupal::service('module_handler')->moduleExists('svg_image_field')) {
-		if($media = $form_state->get('media')) {
-			if($media[0]->getSource()->getMetadata($media[0], 'mimetype') == 'image/svg+xml') {
+function ucsfpharmacy_form_media_library_add_form_upload_alter(&$form, FormStateInterface $form_state) {
+	// Do only if a media file has been uploaded.
+	if($media = $form_state->get('media')) {
+		// Show SVG preview thumbnail in modal add media form.
+		if($media[0]->getSource()->getMetadata($media[0], 'mimetype') == 'image/svg+xml') {
+			if(\Drupal::service('module_handler')->moduleExists('svg_image_field')) {
 				$form['media'][0]['preview']['thumbnail'] = [
 					"#theme" => "svg_image_field_formatter",
 	        "#uri" => $media[0]->get('field_media_svg')->entity->getFileUri(),
@@ -40,7 +37,7 @@ function ucsfpharmacy_form_media_library_add_form_upload_alter(&$form, $form_sta
 /**
  * Implements hook_form_FORM_ID_alter() for editor_media_dialog.
  */
-function ucsfpharmacy_form_editor_media_dialog_alter(&$form, $form_state) {
+function ucsfpharmacy_form_editor_media_dialog_alter(&$form, FormStateInterface $form_state) {
 	$media_embed_element = $form_state->get('media_embed_element');
 	$media = \Drupal::service('entity.repository')->loadEntityByUuid('media', $media_embed_element['data-entity-uuid']);
 
@@ -98,9 +95,31 @@ function ucsfpharmacy_preprocess_page(&$variables) {
 /**
  * Implements hook_oembed_resource_url_alter().
  */
-function ucsfpharmacy_oembed_resource_url_alter(&$parsed_url, $provider) {
+function ucsfpharmacy_oembed_resource_url_alter(array &$parsed_url, Provider $provider) {
 	// Always serve YouTube videos from youtube-nocookie.com.
 	if ($provider->getName() === 'YouTube') {
 		$parsed_url['path'] = str_replace('://youtube.com/', '://youtube-nocookie.com/', $parsed_url['path']);
+	}
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_create() for file.
+ */
+function ucsfpharmacy_file_create(EntityInterface $entity) {
+	// Convert PNG uploads to JPG
+	if($entity->getMimeType() == 'image/png') {
+	 	// Create new JPG image.
+	 	$uri = $entity->getFileUri();
+	  $toolkit = \Drupal::service('image.toolkit.manager')->getDefaultToolkit();
+	  $image = new Image($toolkit, $uri);
+	  $image->convert('jpg');
+	  $image->save($uri);
+
+	  // Replace file metadata with new JPG values.
+	 	$entity->setFilename($entity->getFilename() . '.jpg');
+	 	$entity->setMimeType($image->getMimeType());
+	 	$entity->setSize($image->getFileSize());
+
+	 	\Drupal::messenger()->addStatus(t('PNG converted to JPG.'));
 	}
 }
