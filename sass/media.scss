@@ -79,15 +79,6 @@
       }
     }
 
-    .media-library-item__edit { // position the edit button at the top right of the image
-      position: absolute;
-      top: 2px;
-      right: 2px !important; // this is set to 10px in ckeditor.drupalmedia.css which loads after this file
-      &:hover{
-        cursor: pointer;
-      }
-    }
-
     .cke_widget_wrapper{
       &>.cke_widget_drag_handler_container{ // resolves the poor contrast of the translucent png provided by CKE
         opacity: 1;
@@ -105,7 +96,7 @@
 //  ------------------------------------------------------------------
 //  needed only outside the wysiwyg
 
-    .media { // this handles the case with a caption
-      margin-block-start: 1em;
-      margin-block-end: 1em;
+    .media { // this handles the case without a caption
+      margin-block-start: .5em;
+      margin-block-end: .5em;
     }
