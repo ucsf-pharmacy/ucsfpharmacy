@@ -38,13 +38,15 @@ function ucsfpharmacy_form_media_library_add_form_upload_alter(&$form, FormState
  * Implements hook_form_FORM_ID_alter() for editor_media_dialog.
  */
 function ucsfpharmacy_form_editor_media_dialog_alter(&$form, FormStateInterface $form_state) {
+	// Get selected media item.
 	$media_embed_element = $form_state->get('media_embed_element');
 	$media = \Drupal::service('entity.repository')->loadEntityByUuid('media', $media_embed_element['data-entity-uuid']);
 
 	// Add media item edit link.
 	$form['media_item_edit_link'] = [
 		'#type' => 'item',
-		'#markup' => t('The options on this form apply only to this one instance (locally).<br />To edit global media item settings: <a target="_blank" href="/media/'.$media->id().'/edit">/media/'.$media->id().'/edit</a>.'),
+		'#markup' => t('The options on this form apply only to this single instance of the media item.<br />
+			To edit global settings (such as crop selections or other field values): <a target="_blank" href="/media/'.$media->id().'/edit">/media/'.$media->id().'/edit</a>.'),
 		'#weight' => -100,
 	];
 
@@ -115,7 +117,7 @@ function ucsfpharmacy_file_create(EntityInterface $entity) {
 	  $image->convert('jpg');
 	  $image->save($uri);
 
-	  // Replace file metadata with new JPG values.
+	  // Replace entity metadata with new JPG metadata.
 	 	$entity->setFilename($entity->getFilename() . '.jpg');
 	 	$entity->setMimeType($image->getMimeType());
 	 	$entity->setSize($image->getFileSize());
