@@ -32,6 +32,7 @@ function ucsfpharmacy_form_media_library_add_form_upload_alter(&$form, FormState
 			}
 		}
 	}
+
 }
 
 /**
@@ -124,4 +125,37 @@ function ucsfpharmacy_file_create(EntityInterface $entity) {
 
 	 	\Drupal::messenger()->addStatus(t('PNG converted to JPG.'));
 	}
+}
+
+/**
+ * Implements hook_field_widget_form_alter().
+ *
+ * Force caption field to use `caption` text format.
+ */
+function ucsfpharmacy_field_widget_form_alter(&$element, FormStateInterface $form_state, $context) {
+  // Maps field names to an array containing a single format.
+  $map = [
+    'field_caption' => ['caption'],
+  ];
+
+  $field_name = $context['items']->getFieldDefinition()->getName();
+
+  if (array_key_exists($field_name, $map)) {
+    $element['#allowed_formats'] = $map[$field_name];
+    $element['#after_build'][] = '_ucsfpharmacy_remove_text_format_box';
+  }
+}
+
+/**
+ * #after_build callback.
+ * @see ucsfpharmacy_field_widget_form_alter().
+ */
+function _ucsfpharmacy_remove_text_format_box($form_element, FormStateInterface $form_state) {
+  // Remove help, guidelines and wrapper.
+  unset($form_element['format']['help']);
+  // unset($form_element['format']['guidelines']);
+  unset($form_element['format']['#type']);
+  // unset($form_element['format']['#theme_wrappers']);
+
+  return $form_element;
 }
