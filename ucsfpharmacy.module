@@ -18,7 +18,7 @@ function ucsfpharmacy_form_alter(&$form, FormStateInterface $form_state, $form_i
 }
 
 /**
- * Implements hook_form_FORM_ID_alter() for media_library_add_form_upload.
+ * Implements hook_form_form_id_alter() for media_library_add_form_upload.
  */
 function ucsfpharmacy_form_media_library_add_form_upload_alter(&$form, FormStateInterface $form_state) {
 	// Do only if a media file has been uploaded.
@@ -34,7 +34,7 @@ function ucsfpharmacy_form_media_library_add_form_upload_alter(&$form, FormState
 }
 
 /**
- * Implements hook_form_FORM_ID_alter() for editor_media_dialog.
+ * Implements hook_form_form_id_alter() for editor_media_dialog.
  */
 function ucsfpharmacy_form_editor_media_dialog_alter(&$form, FormStateInterface $form_state) {
 	// Get selected media item.
@@ -74,6 +74,10 @@ function ucsfpharmacy_form_editor_media_dialog_alter(&$form, FormStateInterface 
 	// Remove view mode options for anything but image type.
 	if($bundle != 'image') {
 		unset($form['view_mode']);
+	}
+	// Remove size options for audio and document types.
+	if($bundle == 'audio' || $bundle == 'document') {
+		unset($form['size']);
 	}
 }
 
@@ -142,10 +146,9 @@ function ucsfpharmacy_field_widget_form_alter(&$element, FormStateInterface $for
 function _ucsfpharmacy_remove_text_format_box($form_element, FormStateInterface $form_state) {
   // Remove help, guidelines and wrapper.
   unset($form_element['format']['help']);
-  // unset($form_element['format']['guidelines']);
+  unset($form_element['format']['guidelines']);
   unset($form_element['format']['#type']);
-  // unset($form_element['format']['#theme_wrappers']);
-
+  unset($form_element['format']['#theme_wrappers']);
   return $form_element;
 }
 
@@ -193,4 +196,14 @@ function ucsfpharmacy_oembed_resource_url_alter(array &$parsed_url, Provider $pr
 	if ($provider->getName() === 'YouTube') {
 		$parsed_url['path'] = str_replace('://youtube.com/', '://youtube-nocookie.com/', $parsed_url['path']);
 	}
+}
+
+/**
+ * Implements hook_editor_js_settings_alter().
+ */
+function ucsfpharmacy_editor_js_settings_alter(array &$settings) {
+	// Set caption field initial textbox height to lower value.
+  if (isset($settings['editor']['formats']['caption'])) {
+    $settings['editor']['formats']['caption']['editorSettings']['autoGrow_minHeight'] = 85;
+  }
 }
