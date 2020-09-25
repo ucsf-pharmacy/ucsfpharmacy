@@ -4,6 +4,7 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Image\Image;
 use Drupal\editor\Entity\Editor;
+use Drupal\image\Entity\ImageStyle;
 use Drupal\media\OEmbed\Provider;
 
 /**
@@ -23,16 +24,13 @@ function ucsfpharmacy_form_media_library_add_form_upload_alter(&$form, FormState
 	// Do only if a media file has been uploaded.
 	if($media = $form_state->get('media')) {
 		// Show SVG preview thumbnail in modal add media form.
-		if($media[0]->getSource()->getMetadata($media[0], 'mimetype') == 'image/svg+xml') {
-			if(\Drupal::service('module_handler')->moduleExists('svg_image_field')) {
-				$form['media'][0]['preview']['thumbnail'] = [
-					"#theme" => "svg_image_field_formatter",
-	        "#uri" => $media[0]->get('field_media_svg')->entity->getFileUri(),
-	      ];
-			}
+		if(!empty($media[0]->field_media_svg) && \Drupal::service('module_handler')->moduleExists('svg_image_field')) {
+			$form['media'][0]['preview']['thumbnail'] = [
+				"#theme" => "svg_image_field_formatter",
+        "#uri" => $media[0]->field_media_svg->entity->getFileUri(),
+      ];
 		}
 	}
-
 }
 
 /**
@@ -88,43 +86,33 @@ function ucsfpharmacy_ckeditor_css_alter(array &$css, Editor $editor) {
 }
 
 /**
+ * Implements template_preprocess_image_formatter().
+ */
+function ucsfpharmacy_preprocess_image_formatter(&$variables) {
+	// Use svg_image_field_formatter instead of image_formatter for SVG images.
+	$entity = $variables['item']->getEntity();
+	if(!empty($entity->field_media_svg)
+		&& \Drupal::service('module_handler')->moduleExists('svg_image_field')
+		&& !empty($variables['image_style'])
+	){
+		$variables['image']['#theme'] = 'svg_image_field_formatter';
+		$variables['image']['#uri'] = $entity->field_media_svg->entity->getFileUri();
+		$image_style = ImageStyle::load($variables['image_style']);
+		foreach($image_style->getEffects() as $effect) {
+			$config = $effect->getConfiguration();
+			if($config['id'] == 'image_scale' && !empty($config['data']['width'])) {
+				$variables['image']['#attributes']['width'] = $config['data']['width'];
+			}
+		}
+	}
+}
+
+/**
  * Implements template_preprocess_page().
  */
 function ucsfpharmacy_preprocess_page(&$variables) {
 	// Attach media custom css such as for data-size filter.
 	$variables['#attached']['library'][] =  'ucsfpharmacy/media';
-}
-
-/**
- * Implements hook_oembed_resource_url_alter().
- */
-function ucsfpharmacy_oembed_resource_url_alter(array &$parsed_url, Provider $provider) {
-	// Always serve YouTube videos from youtube-nocookie.com.
-	if ($provider->getName() === 'YouTube') {
-		$parsed_url['path'] = str_replace('://youtube.com/', '://youtube-nocookie.com/', $parsed_url['path']);
-	}
-}
-
-/**
- * Implements hook_ENTITY_TYPE_create() for file.
- */
-function ucsfpharmacy_file_create(EntityInterface $entity) {
-	// Convert PNG uploads to JPG
-	if($entity->getMimeType() == 'image/png') {
-	 	// Create new JPG image.
-	 	$uri = $entity->getFileUri();
-	  $toolkit = \Drupal::service('image.toolkit.manager')->getDefaultToolkit();
-	  $image = new Image($toolkit, $uri);
-	  $image->convert('jpg');
-	  $image->save($uri);
-
-	  // Replace entity metadata with new JPG metadata.
-	 	$entity->setFilename($entity->getFilename() . '.jpg');
-	 	$entity->setMimeType($image->getMimeType());
-	 	$entity->setSize($image->getFileSize());
-
-	 	\Drupal::messenger()->addStatus(t('PNG converted to JPG.'));
-	}
 }
 
 /**
@@ -158,4 +146,36 @@ function _ucsfpharmacy_remove_text_format_box($form_element, FormStateInterface 
   // unset($form_element['format']['#theme_wrappers']);
 
   return $form_element;
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_create() for file.
+ */
+function ucsfpharmacy_file_create(EntityInterface $entity) {
+	// Convert PNG uploads to JPG
+	if($entity->getMimeType() == 'image/png') {
+	 	// Create new JPG image.
+	 	$uri = $entity->getFileUri();
+	  $toolkit = \Drupal::service('image.toolkit.manager')->getDefaultToolkit();
+	  $image = new Image($toolkit, $uri);
+	  $image->convert('jpg');
+	  $image->save($uri);
+
+	  // Replace entity metadata with new JPG metadata.
+	 	$entity->setFilename($entity->getFilename() . '.jpg');
+	 	$entity->setMimeType($image->getMimeType());
+	 	$entity->setSize($image->getFileSize());
+
+	 	\Drupal::messenger()->addStatus(t('PNG converted to JPG.'));
+	}
+}
+
+/**
+ * Implements hook_oembed_resource_url_alter().
+ */
+function ucsfpharmacy_oembed_resource_url_alter(array &$parsed_url, Provider $provider) {
+	// Always serve YouTube videos from youtube-nocookie.com.
+	if ($provider->getName() === 'YouTube') {
+		$parsed_url['path'] = str_replace('://youtube.com/', '://youtube-nocookie.com/', $parsed_url['path']);
+	}
 }
