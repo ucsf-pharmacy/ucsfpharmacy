@@ -51,7 +51,7 @@ function ucsfpharmacy_form_editor_media_dialog_alter(&$form, FormStateInterface 
 	// Add media item edit link.
 	$form['media_item_edit_link'] = [
 		'#type' => 'item',
-		'#markup' => t('The options on this form apply only to this single instance of the media item.<br />
+		'#markup' => t('These options apply only to this instance of the media item.<br />
 			To edit global settings (such as crop selections, caption, or other field values): <a target="_blank" href="/media/'.$media->id().'/edit">/media/'.$media->id().'/edit</a>.'),
 		'#weight' => -100,
 	];
