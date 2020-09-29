@@ -18,13 +18,6 @@ function ucsfpharmacy_form_alter(&$form, FormStateInterface $form_state, $form_i
 }
 
 /**
- * Implements hook_form_form_base_id_alter() for media.
- */
-function ucsfpharmacy_form_media_form_alter(&$form, FormStateInterface $form_state) {
-	// Nothing yet.
-}
-
-/**
  * Implements hook_form_form_id_alter() for media_library_add_form_upload.
  */
 function ucsfpharmacy_form_media_library_add_form_upload_alter(&$form, FormStateInterface $form_state) {
@@ -130,16 +123,16 @@ function ucsfpharmacy_preprocess_page(&$variables) {
 /**
  * Implements hook_field_widget_form_alter().
  *
- * Force caption field to use `caption` text format.
+ * Alter specific field widgets to use only specific text formats and remove
+ * editor ui components.
  */
 function ucsfpharmacy_field_widget_form_alter(&$element, FormStateInterface $form_state, $context) {
   // Maps field names to an array containing a single format.
   $map = [
     'field_caption' => ['caption'],
+    'field_transcript' => ['transcript'],
   ];
-
   $field_name = $context['items']->getFieldDefinition()->getName();
-
   if (array_key_exists($field_name, $map)) {
     $element['#allowed_formats'] = $map[$field_name];
     $element['#after_build'][] = '_ucsfpharmacy_remove_text_format_box';
@@ -151,7 +144,7 @@ function ucsfpharmacy_field_widget_form_alter(&$element, FormStateInterface $for
  * @see ucsfpharmacy_field_widget_form_alter().
  */
 function _ucsfpharmacy_remove_text_format_box($form_element, FormStateInterface $form_state) {
-  // Remove help, guidelines and wrapper.
+  // Remove help, format options, guidelines and wrapper.
   unset($form_element['format']['help']);
   unset($form_element['format']['guidelines']);
   unset($form_element['format']['#type']);
@@ -186,13 +179,16 @@ function ucsfpharmacy_file_create(EntityInterface $file) {
  * Implements hook_entity_type_presave() for media.
  */
 function ucsfpharmacy_media_presave(EntityInterface $media) {
-	// Uncomment below to enable copying default thumbnail to custom thumbnail for new remote video.
-	// if($media->bundle() == 'remote_video' && !empty($media->field_media_image)) {
-	//   if($media->isNew()) {
-	//     $media->field_media_image = $media->thumbnail;
-	//     $media->field_media_image[0]->set('alt', $media->name->value);
-	//   }
-	// }
+	if($media->bundle() == 'remote_video') {
+	  if($media->isNew()) {
+	  	// default thumbnail alt to media name
+	  	$media->thumbnail[0]->set('alt', $media->name->value);
+	  }
+  	// copy auto-generated thumbnail to empty custom thumbnail field
+  	if(empty($media->field_media_image[0])) {
+    	$media->field_media_image = $media->thumbnail;
+    }
+	}
 }
 
 /**
@@ -209,8 +205,10 @@ function ucsfpharmacy_oembed_resource_url_alter(array &$parsed_url, Provider $pr
  * Implements hook_editor_js_settings_alter().
  */
 function ucsfpharmacy_editor_js_settings_alter(array &$settings) {
-	// Set caption field initial textbox height to lower value.
-  if (isset($settings['editor']['formats']['caption'])) {
-    $settings['editor']['formats']['caption']['editorSettings']['autoGrow_minHeight'] = 85;
+	// Set initial textbox height to lower value.
+  if (!empty($settings['editor']['formats'])) {
+  	foreach($settings['editor']['formats'] as $format_id => $format) {
+    	$settings['editor']['formats'][$format_id]['editorSettings']['autoGrow_minHeight'] = 85;
+    }
   }
 }
