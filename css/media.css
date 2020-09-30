@@ -84,72 +84,77 @@ figure figcaption {
 }
 
 /* line 62, ../../../../../Users/frankfarm/Documents/Git/d8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
+.media.media--type-document a {
+  padding-left: 0;
+}
+
+/* line 67, ../../../../../Users/frankfarm/Documents/Git/d8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
 * + .media {
   margin-block-start: 1em;
 }
 
-/* line 66, ../../../../../Users/frankfarm/Documents/Git/d8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
+/* line 71, ../../../../../Users/frankfarm/Documents/Git/d8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
 .laundry-line {
   margin-block-start: 1em;
 }
 
-/* line 68, ../../../../../Users/frankfarm/Documents/Git/d8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
+/* line 73, ../../../../../Users/frankfarm/Documents/Git/d8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
 .laundry-line .media {
   margin-block-start: 0;
 }
 
-/* line 71, ../../../../../Users/frankfarm/Documents/Git/d8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
+/* line 76, ../../../../../Users/frankfarm/Documents/Git/d8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
 .laundry-line .align-right {
   margin-inline-start: 0;
 }
 
-/* line 74, ../../../../../Users/frankfarm/Documents/Git/d8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
+/* line 79, ../../../../../Users/frankfarm/Documents/Git/d8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
 .laundry-line .align-left {
   margin-inline-end: 0;
 }
 
-/* line 86, ../../../../../Users/frankfarm/Documents/Git/d8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
+/* line 91, ../../../../../Users/frankfarm/Documents/Git/d8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
 .cke_widget_wrapper > .cke_widget_element[data-align=right][data-size="100"] + .cke_widget_drag_handler_container {
   left: calc( 100% - 100%) !important;
 }
 
-/* line 86, ../../../../../Users/frankfarm/Documents/Git/d8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
+/* line 91, ../../../../../Users/frankfarm/Documents/Git/d8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
 .cke_widget_wrapper > .cke_widget_element[data-align=right][data-size="75"] + .cke_widget_drag_handler_container {
   left: calc( 100% - 75%) !important;
 }
 
-/* line 86, ../../../../../Users/frankfarm/Documents/Git/d8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
+/* line 91, ../../../../../Users/frankfarm/Documents/Git/d8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
 .cke_widget_wrapper > .cke_widget_element[data-align=right][data-size="66"] + .cke_widget_drag_handler_container {
   left: calc( 100% - 66.66%) !important;
 }
 
-/* line 86, ../../../../../Users/frankfarm/Documents/Git/d8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
+/* line 91, ../../../../../Users/frankfarm/Documents/Git/d8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
 .cke_widget_wrapper > .cke_widget_element[data-align=right][data-size="50"] + .cke_widget_drag_handler_container {
   left: calc( 100% - 50%) !important;
 }
 
-/* line 86, ../../../../../Users/frankfarm/Documents/Git/d8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
+/* line 91, ../../../../../Users/frankfarm/Documents/Git/d8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
 .cke_widget_wrapper > .cke_widget_element[data-align=right][data-size="33"] + .cke_widget_drag_handler_container {
   left: calc( 100% - 33.33%) !important;
 }
 
-/* line 86, ../../../../../Users/frankfarm/Documents/Git/d8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
+/* line 91, ../../../../../Users/frankfarm/Documents/Git/d8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
 .cke_widget_wrapper > .cke_widget_element[data-align=right][data-size="25"] + .cke_widget_drag_handler_container {
   left: calc( 100% - 25%) !important;
 }
 
-/* line 86, ../../../../../Users/frankfarm/Documents/Git/d8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
+/* line 91, ../../../../../Users/frankfarm/Documents/Git/d8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
 .cke_widget_wrapper > .cke_widget_element[data-align=right][data-size="16"] + .cke_widget_drag_handler_container {
   left: calc( 100% - 16.66%) !important;
 }
 
-/* line 93, ../../../../../Users/frankfarm/Documents/Git/d8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
+/* line 98, ../../../../../Users/frankfarm/Documents/Git/d8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
 .cke_widget_wrapper > .cke_widget_drag_handler_container {
   opacity: 1;
   background-color: #ffffff !important;
 }
 
-/* line 100, ../../../../../Users/frankfarm/Documents/Git/d8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
+/* line 105, ../../../../../Users/frankfarm/Documents/Git/d8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
 .cke_editable .field--name-field-media-oembed-video iframe
 , .cke_editable img {
   width: 100%;
@@ -157,12 +162,12 @@ figure figcaption {
   height: auto;
 }
 
-/* line 108, ../../../../../Users/frankfarm/Documents/Git/d8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
+/* line 113, ../../../../../Users/frankfarm/Documents/Git/d8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
 .cke_editable .media button:hover {
   cursor: pointer;
 }
 
-/* line 111, ../../../../../Users/frankfarm/Documents/Git/d8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
+/* line 116, ../../../../../Users/frankfarm/Documents/Git/d8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
 .cke_editable .media:hover {
   cursor: default;
 }
