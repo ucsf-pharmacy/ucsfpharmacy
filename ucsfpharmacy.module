@@ -27,8 +27,8 @@ function ucsfpharmacy_form_media_library_add_form_upload_alter(&$form, FormState
 		if(!empty($media[0]->field_media_svg) && \Drupal::service('module_handler')->moduleExists('svg_image_field')) {
 			$form['media'][0]['preview']['thumbnail'] = [
 				"#theme" => "svg_image_field_formatter",
-        "#uri" => $media[0]->field_media_svg->entity->getFileUri(),
-      ];
+				"#uri" => $media[0]->field_media_svg->entity->getFileUri(),
+			];
 		}
 	}
 }
@@ -127,29 +127,34 @@ function ucsfpharmacy_preprocess_page(&$variables) {
  * editor ui components.
  */
 function ucsfpharmacy_field_widget_form_alter(&$element, FormStateInterface $form_state, $context) {
-  // Maps field names to an array containing a single format.
-  $map = [
-    'field_caption' => ['caption'],
-    'field_transcript' => ['transcript'],
-  ];
-  $field_name = $context['items']->getFieldDefinition()->getName();
-  if (array_key_exists($field_name, $map)) {
-    $element['#allowed_formats'] = $map[$field_name];
-    $element['#after_build'][] = '_ucsfpharmacy_remove_text_format_box';
-  }
+	$field_name = $context['items']->getFieldDefinition()->getName();
+	switch($field_name) {
+		case 'field_caption':
+			$element['#allowed_formats'] = ['caption'];
+			$element['#after_build'][] = '_ucsfpharmacy_alter_text_format_box';
+			break;
+		case 'field_transcript':
+			$element['#allowed_formats'] = ['transcript'];
+			$element['#after_build'][] = '_ucsfpharmacy_alter_text_format_box';
+			break;
+	}
 }
 
 /**
  * #after_build callback.
  * @see ucsfpharmacy_field_widget_form_alter().
  */
-function _ucsfpharmacy_remove_text_format_box($form_element, FormStateInterface $form_state) {
-  // Remove help, format options, guidelines and wrapper.
-  unset($form_element['format']['help']);
-  unset($form_element['format']['guidelines']);
-  unset($form_element['format']['#type']);
-  unset($form_element['format']['#theme_wrappers']);
-  return $form_element;
+function _ucsfpharmacy_alter_text_format_box($form_element, FormStateInterface $form_state) {
+	$format_id = $form_element['#format'];
+	switch($format_id) {
+		default:
+			unset($form_element['format']['help']);
+			unset($form_element['format']['guidelines']);
+			unset($form_element['format']['#type']);
+			unset($form_element['format']['#theme_wrappers']);
+	}
+
+	return $form_element;
 }
 
 /**
@@ -158,20 +163,20 @@ function _ucsfpharmacy_remove_text_format_box($form_element, FormStateInterface 
 function ucsfpharmacy_file_create(EntityInterface $file) {
 	// Convert PNG uploads to JPG
 	if($file->getMimeType() == 'image/png') {
-	 	// Create new JPG image.
-	 	$uri = $file->getFileUri();
-	  $toolkit = \Drupal::service('image.toolkit.manager')->getDefaultToolkit();
-	  /** @var \Drupal\Core\Image\Image $image */
-	  $image = new Image($toolkit, $uri);
-	  $image->convert('jpg');
-	  $image->save($uri);
+		// Create new JPG image.
+		$uri = $file->getFileUri();
+		$toolkit = \Drupal::service('image.toolkit.manager')->getDefaultToolkit();
+		/** @var \Drupal\Core\Image\Image $image */
+		$image = new Image($toolkit, $uri);
+		$image->convert('jpg');
+		$image->save($uri);
 
-	  // Replace original metadata with new JPG metadata.
-	 	$file->setFilename($file->getFilename() . '.jpg');
-	 	$file->setMimeType($image->getMimeType());
-	 	$file->setSize($image->getFileSize());
+		// Replace original metadata with new JPG metadata.
+		$file->setFilename($file->getFilename() . '.jpg');
+		$file->setMimeType($image->getMimeType());
+		$file->setSize($image->getFileSize());
 
-	 	\Drupal::messenger()->addStatus(t('PNG converted to JPG.'));
+		\Drupal::messenger()->addStatus(t('PNG converted to JPG.'));
 	}
 }
 
@@ -180,14 +185,14 @@ function ucsfpharmacy_file_create(EntityInterface $file) {
  */
 function ucsfpharmacy_media_presave(EntityInterface $media) {
 	if($media->bundle() == 'remote_video') {
-	  if($media->isNew()) {
-	  	// default thumbnail alt to media name
-	  	$media->thumbnail[0]->set('alt', $media->name->value);
-	  }
-  	// copy auto-generated thumbnail to empty custom thumbnail field
-  	if(empty($media->field_media_image[0])) {
-    	$media->field_media_image = $media->thumbnail;
-    }
+		if($media->isNew()) {
+			// default thumbnail alt to media name
+			$media->thumbnail[0]->set('alt', $media->name->value);
+		}
+		// copy auto-generated thumbnail to empty custom thumbnail field
+		if(empty($media->field_media_image[0])) {
+			$media->field_media_image = $media->thumbnail;
+		}
 	}
 }
 
@@ -206,9 +211,15 @@ function ucsfpharmacy_oembed_resource_url_alter(array &$parsed_url, Provider $pr
  */
 function ucsfpharmacy_editor_js_settings_alter(array &$settings) {
 	// Set initial textbox height to lower value.
-  if (!empty($settings['editor']['formats'])) {
-  	foreach($settings['editor']['formats'] as $format_id => $format) {
-    	$settings['editor']['formats'][$format_id]['editorSettings']['autoGrow_minHeight'] = 85;
-    }
-  }
+	if (!empty($settings['editor']['formats'])) {
+		foreach($settings['editor']['formats'] as $format_id => $format_settings) {
+			switch($format_id) {
+				case 'caption':
+					$settings['editor']['formats'][$format_id]['editorSettings']['autoGrow_minHeight'] = 50;
+					break;
+				default:
+					$settings['editor']['formats'][$format_id]['editorSettings']['autoGrow_minHeight'] = 85;
+			}
+		}
+	}
 }

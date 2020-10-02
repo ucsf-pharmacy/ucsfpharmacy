@@ -31,3 +31,22 @@ function drimage2_theme() {
 function drimage2_form_node_form_alter(&$form, $form_state) {
   $form['#attached']['library'][] = 'drimage2/ckeditor';
 }
+
+/**
+ * Implements hook_preprocess_hook() for drimage2_formatter.
+ *
+ * Need to copy some values so that they're properly inherited, such as from
+ * template_preprocess_media().
+ *
+ * This could be avoided by modifying:
+ *   drimage2_theme()
+ *   Drupal\drimage2\Plugin\Field\FieldFormatter
+ *   drimage2-formatter.html.twig]
+ * But I did not want to deviate from the original drimage module too much.
+ */
+function drimage2_preprocess_drimage2_formatter(&$variables) {
+  $item = $variables['item'];
+  foreach (['alt'] as $key) {
+    $variables[$key] = $item->$key;
+  }
+}
