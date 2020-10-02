@@ -58,6 +58,11 @@
           margin-block-start: 4px;
         }
       }
+      &.media--type-document{
+        a{
+          padding-left: 0;
+        }
+      }
     }
     * + .media{
       margin-block-start: 1em;
