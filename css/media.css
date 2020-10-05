@@ -1,3 +1,4 @@
+@charset "UTF-8";
 /* line 20, ../../../../../Users/frankfarm/Documents/Git/d8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
 .size-100 {
   max-width: 100%;
@@ -73,11 +74,6 @@ figure figcaption {
   line-height: 0;
 }
 
-/* line 55, ../../../../../Users/frankfarm/Documents/Git/d8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
-.media.media--type-audio {
-  max-width: 300px;
-}
-
 /* line 57, ../../../../../Users/frankfarm/Documents/Git/d8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
 .media.media--type-audio figcaption {
   margin-block-start: 4px;
@@ -113,48 +109,126 @@ figure figcaption {
   margin-inline-end: 0;
 }
 
+/* line 84, ../../../../../Users/frankfarm/Documents/Git/d8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
+details {
+  /* start - animating the accordion behavior helps users understand what’s happening */
+  transition: height 1s ease-in-out;
+  /* end - animating the accordion behavior helps users understand what’s happening */
+}
+
+/* line 87, ../../../../../Users/frankfarm/Documents/Git/d8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
+details:not([open]) {
+  display: inline;
+  height: 2em;
+}
+
 /* line 91, ../../../../../Users/frankfarm/Documents/Git/d8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
+details[open] {
+  display: block;
+  height: 50vh;
+}
+
+/* line 95, ../../../../../Users/frankfarm/Documents/Git/d8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
+details .field--name-field-transcript {
+  background-color: #ffffff;
+}
+
+/* line 100, ../../../../../Users/frankfarm/Documents/Git/d8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
+details summary:focus {
+  color: #ffffff;
+  background-color: #0071ad;
+  outline: none;
+}
+
+/* line 107, ../../../../../Users/frankfarm/Documents/Git/d8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
+details[open] .field--name-field-transcript {
+  /* start - enable visitors to scroll through the entire transcript while keeping the audio or video object onscreen and adjacent. */
+  max-height: calc( 50vh - 2em);
+  overflow: scroll;
+  /* end - enable visitors to scroll through the entire transcript while keeping the audio or video object onscreen and adjacent. */
+  padding: var(--space-m);
+  border: 1px solid #3b3b3b;
+  /* start - forcing scrollbars to appear helps users understand what’s happening */
+  /* end - forcing scrollbars to appear helps users understand what’s happening */
+}
+
+/* line 115, ../../../../../Users/frankfarm/Documents/Git/d8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
+details[open] .field--name-field-transcript::-webkit-scrollbar {
+  -webkit-appearance: none;
+  width: 7px;
+}
+
+/* line 119, ../../../../../Users/frankfarm/Documents/Git/d8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
+details[open] .field--name-field-transcript::-webkit-scrollbar-thumb {
+  border-radius: 4px;
+  background-color: rgba(0, 0, 0, 0.5);
+  box-shadow: 0 0 1px rgba(255, 255, 255, 0.5);
+}
+
+/*
+    start - animate details element open - alternate version not used because it seems less efficient
+
+    based on:
+    https://stackoverflow.com/questions/38213329/how-to-add-css3-transition-with-html5-details-summary-tag-reveal
+    */
+/*
+    details[open] summary ~ * {
+      animation: sweep .5s ease-in-out;
+    }
+    @keyframes sweep {
+      0% {
+        width: 0;
+      }
+      100% {
+        width: 100%;
+      }
+    }
+    */
+/*
+    end - animate details element open - alternate version not used because it seems less efficient
+    */
+/* line 160, ../../../../../Users/frankfarm/Documents/Git/d8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
 .cke_widget_wrapper > .cke_widget_element[data-align=right][data-size="100"] + .cke_widget_drag_handler_container {
   left: calc( 100% - 100%) !important;
 }
 
-/* line 91, ../../../../../Users/frankfarm/Documents/Git/d8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
+/* line 160, ../../../../../Users/frankfarm/Documents/Git/d8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
 .cke_widget_wrapper > .cke_widget_element[data-align=right][data-size="75"] + .cke_widget_drag_handler_container {
   left: calc( 100% - 75%) !important;
 }
 
-/* line 91, ../../../../../Users/frankfarm/Documents/Git/d8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
+/* line 160, ../../../../../Users/frankfarm/Documents/Git/d8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
 .cke_widget_wrapper > .cke_widget_element[data-align=right][data-size="66"] + .cke_widget_drag_handler_container {
   left: calc( 100% - 66.66%) !important;
 }
 
-/* line 91, ../../../../../Users/frankfarm/Documents/Git/d8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
+/* line 160, ../../../../../Users/frankfarm/Documents/Git/d8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
 .cke_widget_wrapper > .cke_widget_element[data-align=right][data-size="50"] + .cke_widget_drag_handler_container {
   left: calc( 100% - 50%) !important;
 }
 
-/* line 91, ../../../../../Users/frankfarm/Documents/Git/d8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
+/* line 160, ../../../../../Users/frankfarm/Documents/Git/d8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
 .cke_widget_wrapper > .cke_widget_element[data-align=right][data-size="33"] + .cke_widget_drag_handler_container {
   left: calc( 100% - 33.33%) !important;
 }
 
-/* line 91, ../../../../../Users/frankfarm/Documents/Git/d8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
+/* line 160, ../../../../../Users/frankfarm/Documents/Git/d8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
 .cke_widget_wrapper > .cke_widget_element[data-align=right][data-size="25"] + .cke_widget_drag_handler_container {
   left: calc( 100% - 25%) !important;
 }
 
-/* line 91, ../../../../../Users/frankfarm/Documents/Git/d8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
+/* line 160, ../../../../../Users/frankfarm/Documents/Git/d8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
 .cke_widget_wrapper > .cke_widget_element[data-align=right][data-size="16"] + .cke_widget_drag_handler_container {
   left: calc( 100% - 16.66%) !important;
 }
 
-/* line 98, ../../../../../Users/frankfarm/Documents/Git/d8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
+/* line 167, ../../../../../Users/frankfarm/Documents/Git/d8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
 .cke_widget_wrapper > .cke_widget_drag_handler_container {
   opacity: 1;
   background-color: #ffffff !important;
 }
 
-/* line 105, ../../../../../Users/frankfarm/Documents/Git/d8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
+/* line 174, ../../../../../Users/frankfarm/Documents/Git/d8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
 .cke_editable .field--name-field-media-oembed-video iframe
 , .cke_editable img {
   width: 100%;
@@ -162,12 +236,12 @@ figure figcaption {
   height: auto;
 }
 
-/* line 113, ../../../../../Users/frankfarm/Documents/Git/d8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
+/* line 182, ../../../../../Users/frankfarm/Documents/Git/d8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
 .cke_editable .media button:hover {
   cursor: pointer;
 }
 
-/* line 116, ../../../../../Users/frankfarm/Documents/Git/d8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
+/* line 185, ../../../../../Users/frankfarm/Documents/Git/d8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
 .cke_editable .media:hover {
   cursor: default;
 }

@@ -53,7 +53,7 @@
         line-height: 0;
       }
       &.media--type-audio{
-        max-width: 300px;
+        // max-width: 300px;
         figcaption{
           margin-block-start: 4px;
         }
@@ -80,6 +80,75 @@
         margin-inline-end: 0;
       }
     }
+
+    details{
+      /* start - animating the accordion behavior helps users understand what’s happening */
+      transition: height 1s ease-in-out;
+      &:not([open]){
+        display: inline;
+        height: 2em;
+      }
+      &[open]{
+        display: block;
+        height: 50vh;
+      }
+      .field--name-field-transcript{
+        background-color: #ffffff; // without this we would briefly have overlapping text
+      }
+      /* end - animating the accordion behavior helps users understand what’s happening */
+      summary{
+        &:focus{
+          color: #ffffff;
+          background-color: #0071ad;
+          outline: none;
+        }
+      }
+      &[open]{
+        .field--name-field-transcript {
+          /* start - enable visitors to scroll through the entire transcript while keeping the audio or video object onscreen and adjacent. */
+          max-height: calc( 50vh - 2em );
+          overflow: scroll;
+          /* end - enable visitors to scroll through the entire transcript while keeping the audio or video object onscreen and adjacent. */
+          padding: var(--space-m);
+          border: 1px solid #3b3b3b;
+          /* start - forcing scrollbars to appear helps users understand what’s happening */
+          &::-webkit-scrollbar {
+            -webkit-appearance: none;
+            width: 7px;
+          }
+          &::-webkit-scrollbar-thumb {
+            border-radius: 4px;
+            background-color: rgba(0, 0, 0, .5);
+            box-shadow: 0 0 1px rgba(255, 255, 255, .5);
+          }
+          /* end - forcing scrollbars to appear helps users understand what’s happening */
+        }
+      }
+    }
+
+    /*
+    start - animate details element open - alternate version not used because it seems less efficient
+
+    based on:
+    https://stackoverflow.com/questions/38213329/how-to-add-css3-transition-with-html5-details-summary-tag-reveal
+    */
+    /*
+    details[open] summary ~ * {
+      animation: sweep .5s ease-in-out;
+    }
+    @keyframes sweep {
+      0% {
+        width: 0;
+      }
+      100% {
+        width: 100%;
+      }
+    }
+    */
+    /*
+    end - animate details element open - alternate version not used because it seems less efficient
+    */
+
 
 
 //  ------------------------------------------------------------------
