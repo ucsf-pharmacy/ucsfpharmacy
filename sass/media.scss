@@ -81,7 +81,7 @@
       }
     }
 
-    details{
+    details:not(.seven-details){
       /* start - animating the accordion behavior helps users understand what’s happening */
       transition: height 1s ease-in-out;
       &:not([open]){

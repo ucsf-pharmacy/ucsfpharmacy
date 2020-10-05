@@ -110,38 +110,38 @@ figure figcaption {
 }
 
 /* line 84, ../../../../../Users/frankfarm/Documents/Git/d8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
-details {
+details:not(.seven-details) {
   /* start - animating the accordion behavior helps users understand what’s happening */
   transition: height 1s ease-in-out;
   /* end - animating the accordion behavior helps users understand what’s happening */
 }
 
 /* line 87, ../../../../../Users/frankfarm/Documents/Git/d8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
-details:not([open]) {
+details:not(.seven-details):not([open]) {
   display: inline;
   height: 2em;
 }
 
 /* line 91, ../../../../../Users/frankfarm/Documents/Git/d8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
-details[open] {
+details:not(.seven-details)[open] {
   display: block;
   height: 50vh;
 }
 
 /* line 95, ../../../../../Users/frankfarm/Documents/Git/d8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
-details .field--name-field-transcript {
+details:not(.seven-details) .field--name-field-transcript {
   background-color: #ffffff;
 }
 
 /* line 100, ../../../../../Users/frankfarm/Documents/Git/d8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
-details summary:focus {
+details:not(.seven-details) summary:focus {
   color: #ffffff;
   background-color: #0071ad;
   outline: none;
 }
 
 /* line 107, ../../../../../Users/frankfarm/Documents/Git/d8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
-details[open] .field--name-field-transcript {
+details:not(.seven-details)[open] .field--name-field-transcript {
   /* start - enable visitors to scroll through the entire transcript while keeping the audio or video object onscreen and adjacent. */
   max-height: calc( 50vh - 2em);
   overflow: scroll;
@@ -153,13 +153,13 @@ details[open] .field--name-field-transcript {
 }
 
 /* line 115, ../../../../../Users/frankfarm/Documents/Git/d8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
-details[open] .field--name-field-transcript::-webkit-scrollbar {
+details:not(.seven-details)[open] .field--name-field-transcript::-webkit-scrollbar {
   -webkit-appearance: none;
   width: 7px;
 }
 
 /* line 119, ../../../../../Users/frankfarm/Documents/Git/d8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
-details[open] .field--name-field-transcript::-webkit-scrollbar-thumb {
+details:not(.seven-details)[open] .field--name-field-transcript::-webkit-scrollbar-thumb {
   border-radius: 4px;
   background-color: rgba(0, 0, 0, 0.5);
   box-shadow: 0 0 1px rgba(255, 255, 255, 0.5);
