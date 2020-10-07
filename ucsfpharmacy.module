@@ -242,11 +242,18 @@ function ucsfpharmacy_preprocess_media(array &$vars) {
 // dpm($vars['elements']['#media']);
 /*
 alt tag is found at these two locations:
+1.
 elements #media #values thumbnail x-default alt
+2.
 elements #media #values field_media_image x-default 0 'alt'
+
+#1 is the YouTube/Vimeo thumbnail image alt
+
+#2 is the override thumbnail image alt
+
 */
 
-// $alt_tag = $vars['elements']['#media']->toArray()['thumbnail'][0]['alt']; // this correctly gathers the existing alt tag (from the thumbnail field)
+// $alt_tag = $vars['elements']['#media']->toArray()['thumbnail'][0]['alt']; // this correctly gathers the existing alt tag for #1
 
 // $alt_tag = $vars['elements']['#media']->toArray()['field_media_image']['x-default'][0]['alt']; // this gives error: Undefined index: x-default
 
