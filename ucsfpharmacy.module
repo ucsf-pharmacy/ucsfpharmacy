@@ -6,6 +6,8 @@ use Drupal\Core\Image\Image;
 use Drupal\editor\Entity\Editor;
 use Drupal\image\Entity\ImageStyle;
 use Drupal\media\OEmbed\Provider;
+use Drupal\media\Entity\Media;
+
 
 /**
  * Implements hook_form_alter().
@@ -239,37 +241,33 @@ function ucsfpharmacy_theme($existing, $type, $theme, $path) {
 
 function ucsfpharmacy_preprocess_media(array &$vars) {
 
-// dpm($vars['elements']['#media']);
-/*
-alt tag is found at these two locations:
-1.
-elements #media #values thumbnail x-default alt
-2.
-elements #media #values field_media_image x-default 0 'alt'
+	// our elements of interest
+	$media = $vars['elements']['#media'];
 
-#1 is the YouTube/Vimeo thumbnail image alt
+	// media_type can be 'image', 'audio', 'document', 'remote_video', 'svg'
+	$media_type = $media->bundle->target_id;
 
-#2 is the override thumbnail image alt
+	if (
+		( $media_type == 'image' || $media_type == 'remote_video' )
+		&&
+		isset( $media->field_media_image )
+		&&
+		isset( $media->field_media_image->alt )
+	){
+		$alt_tag = $media->field_media_image->alt;
 
-*/
+	  if ( !is_null( $alt_tag ) ){
+	    /*
+	    if an existing alt tag doesn't already have a period at the end, add one. this provides a subtle pause that is friendlier for screen reader users and is therefore better for accessibility.
+	    */
+			$new_alt_tag = substr( $alt_tag , -1 ) == '.' ? $alt_tag : $alt_tag . '.';
 
-// $alt_tag = $vars['elements']['#media']->toArray()['thumbnail'][0]['alt']; // this correctly gathers the existing alt tag for #1
+	    /*
+	    if an existing alt tag begins with image of, photo of, or picture of, remove it. this removes redundancy for screen reader users and is therefore better for accessibility.
+	    */
+			$new_alt_tag = preg_replace( "/(image|photo|picture|video)( of)?(: )? ?/i" , '' , $new_alt_tag );
 
-// $alt_tag = $vars['elements']['#media']->toArray()['field_media_image']['x-default'][0]['alt']; // this gives error: Undefined index: x-default
-
-  if ( !empty( $alt_tag ) ){
-    /*
-    if an existing alt tag doesn't already have a period at the end, add one. this provides a subtle pause that is friendlier for screen reader users and is therefore better for accessibility.
-    */
-    $new_alt_tag = substr( $alt_tag , -1 ) == '.' ? $alt_tag : $alt_tag . '.';
-
-    /*
-    if an existing alt tag begins with image of, photo of, or picture of, remove it. this removes redundancy for screen reader users and is therefore better for accessibility.
-    */
-    $new_alt_tag = preg_replace( "/(image|photo|picture)( of)?(: )? ?/i" , '' , $new_alt_tag );
-
-    $vars['elements']['#media']->toArray()['thumbnail'][0]['alt'] = $new_alt_tag; // this doesn't work probably because of the toArray()
-
-    // dpm ( $new_alt_tag );
-  }
+			$media->field_media_image->alt = $new_alt_tag;
+		}
+	}
 }
