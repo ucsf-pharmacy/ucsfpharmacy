@@ -7,7 +7,7 @@ use Drupal\editor\Entity\Editor;
 use Drupal\image\Entity\ImageStyle;
 use Drupal\media\OEmbed\Provider;
 use Drupal\media\Entity\Media;
-
+use Drupal\media\IFrameMarkup;
 
 /**
  * Implements hook_form_alter().
@@ -199,13 +199,13 @@ function ucsfpharmacy_media_presave(EntityInterface $media) {
 }
 
 /**
- * Implements hook_oembed_resource_url_alter().
+ * Prevent YouTube tracking for inner iframe created by YouTube
+ * See https://www.drupal.org/project/drupal/issues/3043821#comment-13423651
  */
-function ucsfpharmacy_oembed_resource_url_alter(array &$parsed_url, Provider $provider) {
-	// Always serve YouTube videos from youtube-nocookie.com.
-	if ($provider->getName() === 'YouTube') {
-		$parsed_url['path'] = str_replace('://youtube.com/', '://youtube-nocookie.com/', $parsed_url['path']);
-	}
+function ucsfpharmacy_preprocess_media_oembed_iframe(&$variables) {
+  if (strpos((string) $variables['media'], 'youtube.com') !== FALSE) {
+    $variables['media'] = IFrameMarkup::create(str_replace('youtube.com/', 'youtube-nocookie.com/', $variables['media']));
+  }
 }
 
 /**
@@ -247,6 +247,8 @@ function ucsfpharmacy_preprocess_media(array &$vars) {
 	// media_type can be 'image', 'audio', 'document', 'remote_video', 'svg'
 	$media_type = $media->bundle->target_id;
 
+	// dpm ( $media );
+
 	if (
 		( $media_type == 'image' || $media_type == 'remote_video' )
 		&&
@@ -263,11 +265,28 @@ function ucsfpharmacy_preprocess_media(array &$vars) {
 			$new_alt_tag = substr( $alt_tag , -1 ) == '.' ? $alt_tag : $alt_tag . '.';
 
 	    /*
-	    if an existing alt tag begins with image of, photo of, or picture of, remove it. this removes redundancy for screen reader users and is therefore better for accessibility.
+	    if an existing alt tag begins with image of, photo of, picture of, or video of, remove it. this removes redundancy for screen reader users and is therefore better for accessibility.
 	    */
 			$new_alt_tag = preg_replace( "/(image|photo|picture|video)( of)?(: )? ?/i" , '' , $new_alt_tag );
 
 			$media->field_media_image->alt = $new_alt_tag;
 		}
 	}
+  /*
+  Prevent YouTube tracking for outer iframe created by Drupal
+  */
+  if ( $media_type == 'remote_video' ){
+    /*
+    find the source url of the outer iframe
+    */
+    $oembed = $vars['elements']['field_media_oembed_video'][0]['#attributes']['src'];
+    /*
+    swap the tracking domain with the non-tracking domain
+    */
+    $oembed = str_replace( 'youtube.com/' , 'youtube-nocookie.com/' , $oembed );
+    /*
+    this dpm prints what we want, but the iframe markup still shows the tracking domain. why?
+    */
+    dpm( $oembed );
+  }
 }
