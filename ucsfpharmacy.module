@@ -247,8 +247,6 @@ function ucsfpharmacy_preprocess_media(array &$vars) {
 	// media_type can be 'image', 'audio', 'document', 'remote_video', 'svg'
 	$media_type = $media->bundle->target_id;
 
-	// dpm ( $media );
-
 	if (
 		( $media_type == 'image' || $media_type == 'remote_video' )
 		&&
@@ -284,9 +282,5 @@ function ucsfpharmacy_preprocess_media(array &$vars) {
     swap the tracking domain with the non-tracking domain
     */
     $oembed = str_replace( 'youtube.com/' , 'youtube-nocookie.com/' , $oembed );
-    /*
-    this dpm prints what we want, but the iframe markup still shows the tracking domain. why?
-    */
-    dpm( $oembed );
   }
 }
