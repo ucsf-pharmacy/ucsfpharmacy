@@ -2,27 +2,7 @@
 
 namespace Drupal\ucsfpharmacy\Plugin\Block;
 
-use Drupal\Component\Plugin\Factory\DefaultFactory;
-use Drupal\Component\Utility\NestedArray;
-use Drupal\Core\Access\AccessResult;
-use Drupal\Core\Block\BlockBase;
-use Drupal\Core\Cache\CacheableMetadata;
-use Drupal\Core\Entity\EntityDisplayBase;
-use Drupal\Core\Entity\EntityFieldManagerInterface;
-use Drupal\Core\Entity\FieldableEntityInterface;
-use Drupal\Core\Extension\ModuleHandlerInterface;
-use Drupal\Core\Field\FieldDefinitionInterface;
-use Drupal\Core\Field\FormatterInterface;
-use Drupal\Core\Field\FormatterPluginManager;
-use Drupal\Core\Form\EnforcedResponseException;
-use Drupal\Core\Form\FormHelper;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
-use Drupal\Core\Plugin\ContextAwarePluginInterface;
-use Drupal\Core\Session\AccountInterface;
-use Drupal\Core\StringTranslation\TranslatableMarkup;
-use Psr\Log\LoggerInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\layout_builder\Plugin\Block\FieldBlock;
 
 /**
@@ -31,7 +11,7 @@ use Drupal\layout_builder\Plugin\Block\FieldBlock;
  *
  * @Block(
  *   id = "field_delta_block",
- *   deriver = "\Drupal\layout_builder\Plugin\Derivative\FieldBlockDeriver",
+ *   deriver = "\Drupal\ucsfpharmacy\Plugin\Derivative\FieldDeltaBlockDeriver",
  * )
  */
 class FieldDeltaBlock extends FieldBlock {
