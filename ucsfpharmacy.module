@@ -268,3 +268,19 @@ function ucsfpharmacy_preprocess_media_oembed_iframe(&$variables) {
     $variables['media'] = IFrameMarkup::create(str_replace('youtube.com/', 'youtube-nocookie.com/', $variables['media']));
   }
 }
+
+/**
+ * Implements template_preprocess_block().
+ */
+function ucsfpharmacy_preprocess_block(&$variables) {
+	if($variables['base_plugin_id'] == 'field_delta_block'
+		&& isset($variables['configuration']['delta'])
+	){
+		$selected_delta = $variables['configuration']['delta']
+		foreach($variables['content']['#items'] as $delta => $item) {
+			if($delta != $selected_delta) {
+				unset($variables['content'][$delta]);
+			}
+		}
+	}
+}
