@@ -1,40 +1,40 @@
 @charset "UTF-8";
-/* line 20, ../../../../../Users/frankfarm/Documents/Git/d8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
+/* line 20, ../../../../../Users/hhuang1/Documents/_projs/drupal8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
 .size-100 {
   max-width: 100%;
 }
 
-/* line 20, ../../../../../Users/frankfarm/Documents/Git/d8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
+/* line 20, ../../../../../Users/hhuang1/Documents/_projs/drupal8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
 .size-75 {
   max-width: 75%;
 }
 
-/* line 20, ../../../../../Users/frankfarm/Documents/Git/d8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
+/* line 20, ../../../../../Users/hhuang1/Documents/_projs/drupal8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
 .size-66 {
   max-width: 66.66%;
 }
 
-/* line 20, ../../../../../Users/frankfarm/Documents/Git/d8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
+/* line 20, ../../../../../Users/hhuang1/Documents/_projs/drupal8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
 .size-50 {
   max-width: 50%;
 }
 
-/* line 20, ../../../../../Users/frankfarm/Documents/Git/d8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
+/* line 20, ../../../../../Users/hhuang1/Documents/_projs/drupal8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
 .size-33 {
   max-width: 33.33%;
 }
 
-/* line 20, ../../../../../Users/frankfarm/Documents/Git/d8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
+/* line 20, ../../../../../Users/hhuang1/Documents/_projs/drupal8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
 .size-25 {
   max-width: 25%;
 }
 
-/* line 20, ../../../../../Users/frankfarm/Documents/Git/d8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
+/* line 20, ../../../../../Users/hhuang1/Documents/_projs/drupal8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
 .size-16 {
   max-width: 16.66%;
 }
 
-/* line 25, ../../../../../Users/frankfarm/Documents/Git/d8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
+/* line 25, ../../../../../Users/hhuang1/Documents/_projs/drupal8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
 figure {
   margin-block-start: 0;
   margin-block-end: 0;
@@ -42,106 +42,103 @@ figure {
   margin-inline-end: 0;
 }
 
-/* line 30, ../../../../../Users/frankfarm/Documents/Git/d8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
+/* line 30, ../../../../../Users/hhuang1/Documents/_projs/drupal8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
 figure figcaption {
   background-color: #ededee;
   padding: 2px 4px;
 }
 
-/* line 36, ../../../../../Users/frankfarm/Documents/Git/d8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
+/* line 36, ../../../../../Users/hhuang1/Documents/_projs/drupal8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
 .media {
   margin-block-end: .75em;
+  /*
+	    start - animate details element open - alternate version not used because it seems less efficient
+
+	    based on:
+	    https://stackoverflow.com/questions/38213329/how-to-add-css3-transition-with-html5-details-summary-tag-reveal
+	    */
+  /*
+	    details[open] summary ~ * {
+	      animation: sweep .5s ease-in-out;
+	    }
+	    @keyframes sweep {
+	      0% {
+	        width: 0;
+	      }
+	      100% {
+	        width: 100%;
+	      }
+	    }
+	    */
+  /*
+	    end - animate details element open - alternate version not used because it seems less efficient
+	    */
 }
 
-/* line 41, ../../../../../Users/frankfarm/Documents/Git/d8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
+/* line 41, ../../../../../Users/hhuang1/Documents/_projs/drupal8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
 .media.align-right.size-100, .media.align-left.size-100 {
   float: none;
   margin-block-end: 1em;
 }
 
-/* line 46, ../../../../../Users/frankfarm/Documents/Git/d8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
+/* line 46, ../../../../../Users/hhuang1/Documents/_projs/drupal8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
 .media.align-right:not(.size-100) {
   margin-inline-start: 1.5em;
 }
 
-/* line 49, ../../../../../Users/frankfarm/Documents/Git/d8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
+/* line 49, ../../../../../Users/hhuang1/Documents/_projs/drupal8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
 .media.align-left:not(.size-100) {
   margin-inline-end: 1.5em;
 }
 
-/* line 52, ../../../../../Users/frankfarm/Documents/Git/d8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
+/* line 52, ../../../../../Users/hhuang1/Documents/_projs/drupal8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
 .media .field--name-field-media-audio-file .field__item {
   line-height: 0;
 }
 
-/* line 57, ../../../../../Users/frankfarm/Documents/Git/d8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
+/* line 57, ../../../../../Users/hhuang1/Documents/_projs/drupal8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
 .media.media--type-audio figcaption {
   margin-block-start: 4px;
 }
 
-/* line 62, ../../../../../Users/frankfarm/Documents/Git/d8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
+/* line 62, ../../../../../Users/hhuang1/Documents/_projs/drupal8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
 .media.media--type-document a {
   padding-left: 0;
 }
 
-/* line 67, ../../../../../Users/frankfarm/Documents/Git/d8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
-* + .media {
-  margin-block-start: 1em;
-}
-
-/* line 71, ../../../../../Users/frankfarm/Documents/Git/d8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
-.laundry-line {
-  margin-block-start: 1em;
-}
-
-/* line 73, ../../../../../Users/frankfarm/Documents/Git/d8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
-.laundry-line .media {
-  margin-block-start: 0;
-}
-
-/* line 76, ../../../../../Users/frankfarm/Documents/Git/d8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
-.laundry-line .align-right {
-  margin-inline-start: 0;
-}
-
-/* line 79, ../../../../../Users/frankfarm/Documents/Git/d8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
-.laundry-line .align-left {
-  margin-inline-end: 0;
-}
-
-/* line 84, ../../../../../Users/frankfarm/Documents/Git/d8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
-details:not(.seven-details) {
+/* line 66, ../../../../../Users/hhuang1/Documents/_projs/drupal8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
+.media details:not(.seven-details) {
   /* start - animating the accordion behavior helps users understand what’s happening */
   transition: height 1s ease-in-out;
   /* end - animating the accordion behavior helps users understand what’s happening */
 }
 
-/* line 87, ../../../../../Users/frankfarm/Documents/Git/d8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
-details:not(.seven-details):not([open]) {
+/* line 69, ../../../../../Users/hhuang1/Documents/_projs/drupal8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
+.media details:not(.seven-details):not([open]) {
   display: inline;
   height: 2em;
 }
 
-/* line 91, ../../../../../Users/frankfarm/Documents/Git/d8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
-details:not(.seven-details)[open] {
+/* line 73, ../../../../../Users/hhuang1/Documents/_projs/drupal8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
+.media details:not(.seven-details)[open] {
   display: block;
   height: 50vh;
 }
 
-/* line 95, ../../../../../Users/frankfarm/Documents/Git/d8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
-details:not(.seven-details) .field--name-field-transcript {
+/* line 77, ../../../../../Users/hhuang1/Documents/_projs/drupal8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
+.media details:not(.seven-details) .field--name-field-transcript {
   background-color: #ffffff;
 }
 
-/* line 100, ../../../../../Users/frankfarm/Documents/Git/d8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
-details:not(.seven-details) summary:focus {
+/* line 82, ../../../../../Users/hhuang1/Documents/_projs/drupal8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
+.media details:not(.seven-details) summary:focus {
   color: #ffffff;
   background-color: #0071ad;
   outline: none;
 }
 
-/* line 107, ../../../../../Users/frankfarm/Documents/Git/d8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
-details:not(.seven-details)[open] .field--name-field-transcript {
+/* line 89, ../../../../../Users/hhuang1/Documents/_projs/drupal8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
+.media details:not(.seven-details)[open] .field--name-field-transcript {
   /* start - enable visitors to scroll through the entire transcript while keeping the audio or video object onscreen and adjacent. */
   max-height: calc( 50vh - 2em);
   overflow: scroll;
@@ -152,83 +149,86 @@ details:not(.seven-details)[open] .field--name-field-transcript {
   /* end - forcing scrollbars to appear helps users understand what’s happening */
 }
 
-/* line 115, ../../../../../Users/frankfarm/Documents/Git/d8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
-details:not(.seven-details)[open] .field--name-field-transcript::-webkit-scrollbar {
+/* line 97, ../../../../../Users/hhuang1/Documents/_projs/drupal8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
+.media details:not(.seven-details)[open] .field--name-field-transcript::-webkit-scrollbar {
   -webkit-appearance: none;
   width: 7px;
 }
 
-/* line 119, ../../../../../Users/frankfarm/Documents/Git/d8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
-details:not(.seven-details)[open] .field--name-field-transcript::-webkit-scrollbar-thumb {
+/* line 101, ../../../../../Users/hhuang1/Documents/_projs/drupal8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
+.media details:not(.seven-details)[open] .field--name-field-transcript::-webkit-scrollbar-thumb {
   border-radius: 4px;
   background-color: rgba(0, 0, 0, 0.5);
   box-shadow: 0 0 1px rgba(255, 255, 255, 0.5);
 }
 
-/*
-    start - animate details element open - alternate version not used because it seems less efficient
+/* line 134, ../../../../../Users/hhuang1/Documents/_projs/drupal8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
+* + .media {
+  margin-block-start: 1em;
+}
 
-    based on:
-    https://stackoverflow.com/questions/38213329/how-to-add-css3-transition-with-html5-details-summary-tag-reveal
-    */
-/*
-    details[open] summary ~ * {
-      animation: sweep .5s ease-in-out;
-    }
-    @keyframes sweep {
-      0% {
-        width: 0;
-      }
-      100% {
-        width: 100%;
-      }
-    }
-    */
-/*
-    end - animate details element open - alternate version not used because it seems less efficient
-    */
-/* line 160, ../../../../../Users/frankfarm/Documents/Git/d8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
+/* line 138, ../../../../../Users/hhuang1/Documents/_projs/drupal8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
+.laundry-line {
+  margin-block-start: 1em;
+}
+
+/* line 140, ../../../../../Users/hhuang1/Documents/_projs/drupal8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
+.laundry-line .media {
+  margin-block-start: 0;
+}
+
+/* line 143, ../../../../../Users/hhuang1/Documents/_projs/drupal8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
+.laundry-line .align-right {
+  margin-inline-start: 0;
+}
+
+/* line 146, ../../../../../Users/hhuang1/Documents/_projs/drupal8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
+.laundry-line .align-left {
+  margin-inline-end: 0;
+}
+
+/* line 159, ../../../../../Users/hhuang1/Documents/_projs/drupal8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
 .cke_widget_wrapper > .cke_widget_element[data-align=right][data-size="100"] + .cke_widget_drag_handler_container {
   left: calc( 100% - 100%) !important;
 }
 
-/* line 160, ../../../../../Users/frankfarm/Documents/Git/d8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
+/* line 159, ../../../../../Users/hhuang1/Documents/_projs/drupal8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
 .cke_widget_wrapper > .cke_widget_element[data-align=right][data-size="75"] + .cke_widget_drag_handler_container {
   left: calc( 100% - 75%) !important;
 }
 
-/* line 160, ../../../../../Users/frankfarm/Documents/Git/d8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
+/* line 159, ../../../../../Users/hhuang1/Documents/_projs/drupal8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
 .cke_widget_wrapper > .cke_widget_element[data-align=right][data-size="66"] + .cke_widget_drag_handler_container {
   left: calc( 100% - 66.66%) !important;
 }
 
-/* line 160, ../../../../../Users/frankfarm/Documents/Git/d8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
+/* line 159, ../../../../../Users/hhuang1/Documents/_projs/drupal8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
 .cke_widget_wrapper > .cke_widget_element[data-align=right][data-size="50"] + .cke_widget_drag_handler_container {
   left: calc( 100% - 50%) !important;
 }
 
-/* line 160, ../../../../../Users/frankfarm/Documents/Git/d8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
+/* line 159, ../../../../../Users/hhuang1/Documents/_projs/drupal8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
 .cke_widget_wrapper > .cke_widget_element[data-align=right][data-size="33"] + .cke_widget_drag_handler_container {
   left: calc( 100% - 33.33%) !important;
 }
 
-/* line 160, ../../../../../Users/frankfarm/Documents/Git/d8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
+/* line 159, ../../../../../Users/hhuang1/Documents/_projs/drupal8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
 .cke_widget_wrapper > .cke_widget_element[data-align=right][data-size="25"] + .cke_widget_drag_handler_container {
   left: calc( 100% - 25%) !important;
 }
 
-/* line 160, ../../../../../Users/frankfarm/Documents/Git/d8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
+/* line 159, ../../../../../Users/hhuang1/Documents/_projs/drupal8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
 .cke_widget_wrapper > .cke_widget_element[data-align=right][data-size="16"] + .cke_widget_drag_handler_container {
   left: calc( 100% - 16.66%) !important;
 }
 
-/* line 167, ../../../../../Users/frankfarm/Documents/Git/d8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
+/* line 166, ../../../../../Users/hhuang1/Documents/_projs/drupal8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
 .cke_widget_wrapper > .cke_widget_drag_handler_container {
   opacity: 1;
   background-color: #ffffff !important;
 }
 
-/* line 174, ../../../../../Users/frankfarm/Documents/Git/d8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
+/* line 173, ../../../../../Users/hhuang1/Documents/_projs/drupal8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
 .cke_editable .field--name-field-media-oembed-video iframe
 , .cke_editable img {
   width: 100%;
@@ -236,12 +236,12 @@ details:not(.seven-details)[open] .field--name-field-transcript::-webkit-scrollb
   height: auto;
 }
 
-/* line 182, ../../../../../Users/frankfarm/Documents/Git/d8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
+/* line 181, ../../../../../Users/hhuang1/Documents/_projs/drupal8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
 .cke_editable .media button:hover {
   cursor: pointer;
 }
 
-/* line 185, ../../../../../Users/frankfarm/Documents/Git/d8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
+/* line 184, ../../../../../Users/hhuang1/Documents/_projs/drupal8/docroot/modules/contrib/ucsfpharmacy/sass/media.scss */
 .cke_editable .media:hover {
   cursor: default;
 }
