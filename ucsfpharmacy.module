@@ -5,7 +5,6 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Image\Image;
 use Drupal\editor\Entity\Editor;
 use Drupal\image\Entity\ImageStyle;
-use Drupal\media\OEmbed\Provider;
 use Drupal\media\Entity\Media;
 use Drupal\media\IFrameMarkup;
 
@@ -199,16 +198,6 @@ function ucsfpharmacy_media_presave(EntityInterface $media) {
 }
 
 /**
- * Prevent YouTube tracking for inner iframe created by YouTube
- * See https://www.drupal.org/project/drupal/issues/3043821#comment-13423651
- */
-function ucsfpharmacy_preprocess_media_oembed_iframe(&$variables) {
-  if (strpos((string) $variables['media'], 'youtube.com') !== FALSE) {
-    $variables['media'] = IFrameMarkup::create(str_replace('youtube.com/', 'youtube-nocookie.com/', $variables['media']));
-  }
-}
-
-/**
  * Implements hook_editor_js_settings_alter().
  */
 function ucsfpharmacy_editor_js_settings_alter(array &$settings) {
@@ -229,7 +218,6 @@ function ucsfpharmacy_editor_js_settings_alter(array &$settings) {
 /**
  * Implements hook_theme().
  */
-
 function ucsfpharmacy_theme($existing, $type, $theme, $path) {
   return [
     'field__media__field_transcript' => [
@@ -239,11 +227,12 @@ function ucsfpharmacy_theme($existing, $type, $theme, $path) {
   ];
 }
 
-function ucsfpharmacy_preprocess_media(array &$vars) {
-
+/**
+ * Implements hook_preprocess_hook() for media.
+ */
+function ucsfpharmacy_preprocess_media(array &$variables) {
 	// our elements of interest
-	$media = $vars['elements']['#media'];
-
+	$media = $variables['elements']['#media'];
 	// media_type can be 'image', 'audio', 'document', 'remote_video', 'svg'
 	$media_type = $media->bundle->target_id;
 
@@ -257,30 +246,25 @@ function ucsfpharmacy_preprocess_media(array &$vars) {
 		$alt_tag = $media->field_media_image->alt;
 
 	  if ( !is_null( $alt_tag ) ){
-	    /*
-	    if an existing alt tag doesn't already have a period at the end, add one. this provides a subtle pause that is friendlier for screen reader users and is therefore better for accessibility.
-	    */
+	    // if an existing alt tag doesn't already have a period at the end, add one. this provides a subtle pause that is friendlier for screen reader users and is therefore better for accessibility.
 			$new_alt_tag = substr( $alt_tag , -1 ) == '.' ? $alt_tag : $alt_tag . '.';
 
-	    /*
-	    if an existing alt tag begins with image of, photo of, picture of, or video of, remove it. this removes redundancy for screen reader users and is therefore better for accessibility.
-	    */
+	    // if an existing alt tag begins with image of, photo of, picture of, or video of, remove it. this removes redundancy for screen reader users and is therefore better for accessibility.
 			$new_alt_tag = preg_replace( "/(image|photo|picture|video)( of)?(: )? ?/i" , '' , $new_alt_tag );
 
 			$media->field_media_image->alt = $new_alt_tag;
 		}
-	}
-  /*
-  Prevent YouTube tracking for outer iframe created by Drupal
-  */
-  if ( $media_type == 'remote_video' ){
-    /*
-    find the source url of the outer iframe
-    */
-    $oembed = $vars['elements']['field_media_oembed_video'][0]['#attributes']['src'];
-    /*
-    swap the tracking domain with the non-tracking domain
-    */
-    $oembed = str_replace( 'youtube.com/' , 'youtube-nocookie.com/' , $oembed );
+  }
+}
+
+/**
+ * Implements hook_preprocess_hook() for media_oembed_iframe.
+ *
+ * Prevent YouTube tracking for inner iframe created by YouTube.
+ * @see https://www.drupal.org/project/drupal/issues/3043821#comment-13423651
+ */
+function ucsfpharmacy_preprocess_media_oembed_iframe(&$variables) {
+  if (strpos((string) $variables['media'], 'youtube.com') !== FALSE) {
+    $variables['media'] = IFrameMarkup::create(str_replace('youtube.com/', 'youtube-nocookie.com/', $variables['media']));
   }
 }
