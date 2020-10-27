@@ -6,8 +6,10 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\layout_builder\Plugin\Block\FieldBlock;
 
 /**
- * Provides a block that renders a field from an entity.
- * Also allows specifying a field delta.
+ * Provides a block that stores configuration for a delta value.
+ * The delta value can then be used in a downstream function, such as
+ * template_preprocess_block(), to only display the field item at the selected
+ * delta.
  *
  * @Block(
  *   id = "field_delta_block",
@@ -22,12 +24,17 @@ class FieldDeltaBlock extends FieldBlock {
   public function blockForm($form, FormStateInterface $form_state) {
     $config = $this->getConfiguration();
 
+    $delta_options = [];
+    for($i = 0; $i < 100; $i++) {
+      $delta_options[] = $i;
+    }
+
     $form['delta'] = array(
       '#type' => 'select',
       '#title' => $this->t('Delta'),
       '#default_value' => $config['delta'],
-      '#options' => [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
-      '#description' => $this->t(''),
+      '#options' => $delta_options,
+      '#description' => $this->t('Represents the item index in a multiple value field, eg. delta 0 is the first item, 1 is the second, etc.'),
     );
 
 		return parent::blockForm($form, $form_state);

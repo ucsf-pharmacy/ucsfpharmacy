@@ -246,10 +246,10 @@ function ucsfpharmacy_preprocess_media(array &$variables) {
 		$alt_tag = $media->field_media_image->alt;
 
 	  if ( !is_null( $alt_tag ) ){
-	    // if an existing alt tag doesn't already have a period at the end, add one. this provides a subtle pause that is friendlier for screen reader users and is therefore better for accessibility.
+	    // If an existing alt tag doesn't already have a period at the end, add one. This provides a subtle pause that is friendlier for screen reader users and is therefore better for accessibility.
 			$new_alt_tag = substr( $alt_tag , -1 ) == '.' ? $alt_tag : $alt_tag . '.';
 
-	    // if an existing alt tag begins with image of, photo of, picture of, or video of, remove it. this removes redundancy for screen reader users and is therefore better for accessibility.
+	    // If an existing alt tag begins with image of, photo of, picture of, or video of, remove it. This removes redundancy for screen reader users and is therefore better for accessibility.
 			$new_alt_tag = preg_replace( "/(image|photo|picture|video)( of)?(: )? ?/i" , '' , $new_alt_tag );
 
 			$media->field_media_image->alt = $new_alt_tag;
@@ -271,6 +271,9 @@ function ucsfpharmacy_preprocess_media_oembed_iframe(&$variables) {
 
 /**
  * Implements template_preprocess_block().
+ *
+ * Displays only the field item at the selected delta configured in the block.
+ * @see Drupal\ucsfpharmacy\Plugin\Block\FieldDeltaBlock
  */
 function ucsfpharmacy_preprocess_block(&$variables) {
 	if($variables['base_plugin_id'] == 'field_delta_block'
