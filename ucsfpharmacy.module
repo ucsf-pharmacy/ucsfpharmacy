@@ -91,6 +91,20 @@ function ucsfpharmacy_ckeditor_css_alter(array &$css, Editor $editor) {
 }
 
 /**
+ * Implements template_preprocess_field().
+ */
+function ucsfpharmacy_preprocess_field(&$variables) {
+	$element = $variables['element'];
+
+	// Change am/pm to a.m./p.m. to adhere to SOP style guide
+	if($element['#formatter'] == 'timestamp') {
+		foreach($element['#items'] as $i => $item) {
+			$variables['items'][$i]['content']['#markup'] = str_ireplace(array('am','pm'), array('A.M.','P.M.'), $element[$i]['#markup']);
+		}
+	}
+}
+
+/**
  * Implements template_preprocess_image_formatter().
  */
 function ucsfpharmacy_preprocess_image_formatter(&$variables) {
