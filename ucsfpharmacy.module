@@ -1,5 +1,8 @@
 <?php
 
+use Drupal\Core\Ajax\AjaxResponse;
+use Drupal\Core\Ajax\InvokeCommand;
+use Drupal\Core\Ajax\OpenOffCanvasDialogCommand;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Image\Image;
@@ -7,6 +10,7 @@ use Drupal\editor\Entity\Editor;
 use Drupal\image\Entity\ImageStyle;
 use Drupal\media\Entity\Media;
 use Drupal\media\IFrameMarkup;
+use Drupal\Component\Utility\Html;
 
 /**
  * Implements hook_form_alter().
@@ -16,6 +20,54 @@ function ucsfpharmacy_form_alter(&$form, FormStateInterface $form_state, $form_i
 	if(!empty($form['status']) && empty($form['status']['#group']) &&  !empty($form['revision_information'])) {
 		$form['status']['#group'] = 'revision_information';
 	}
+}
+
+/**
+ * Implements hook_form_form_id_alter() for node_article_form.
+ */
+function ucsfpharmacy_form_node_article_form_alter(&$form, FormStateInterface $form_state) {
+	// Adds a button that scrapes metadata from requested uri.
+	if(!empty($form['field_url'])) {
+		$form['field_url']['meta_scraper'] = [
+			'#type' => 'button',
+	    '#value' => t('Scrape metadata from URL'),
+	    '#limit_validation_errors' => array(),
+		  // '#attributes' => ['onclick' => 'return false;'],
+		  '#attached' => [
+		    'library' => ['ucsfpharmacy/meta_scraper'],
+		  ],
+			'#ajax' => [
+			  'callback' => 'ucsfpharmacy_meta_scraper',
+			  'event' => 'click',
+			  'disable-refocus' => FALSE,
+			],
+	  ];
+	}
+}
+
+/**
+ * Callback function that retrieves html from requested uri.
+ * @see ucsfpharmacy_form_node_article_form_alter().
+ */
+function ucsfpharmacy_meta_scraper(&$form, FormStateInterface $form_state) {
+	if($uri = $form_state->getValue('field_url')[0]['uri']) {
+		if($html = file_get_contents($uri)) {
+			$dom = Html::load($html);
+			$metas = $dom->getElementsByTagName('meta');
+			foreach ($metas as $meta){
+				if($property = $meta->getAttribute('property')) {
+			    $data[$property] = $meta->getAttribute('content');
+			  }
+			}
+		  $response = new AjaxResponse();
+		  $response->addCommand(new InvokeCommand(NULL, 'metaScraperAjaxCallback', [$data]));
+
+		  // $data is passed to js/meta_scraper.js for client-side processing.
+		  return $response;
+		}
+	}
+	// On empty or error, return empty markup so it does nothing.
+	return ['#markup' => ''];
 }
 
 /**

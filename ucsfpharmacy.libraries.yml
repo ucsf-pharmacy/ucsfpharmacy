@@ -2,3 +2,9 @@ media:
   css:
     theme:
       css/media.css: {}
+
+meta_scraper:
+  js:
+    js/meta_scraper.js: {}
+  dependencies:
+    - core/jquery
