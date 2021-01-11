@@ -311,8 +311,8 @@ function ucsfpharmacy_preprocess_media(array &$variables) {
 	){
 		$alt_tag = $media->field_media_image->alt;
 
-		if ( $alt_tag == '(decorative)' ) {
-			// "(decorative)" is special alt string designation that should output as empty string for images
+		if ( $alt_tag == '!decorative' ) {
+			// special alt string designation that should output as empty string for images
 			$media->field_media_image->alt = '';
 
 	  } elseif ( !empty( $alt_tag ) ){
