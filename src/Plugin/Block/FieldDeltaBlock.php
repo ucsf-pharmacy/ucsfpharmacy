@@ -21,6 +21,19 @@ class FieldDeltaBlock extends FieldBlock {
   /**
    * {@inheritdoc}
    */
+  public function defaultConfiguration() {
+    return [
+      'label_display' => FALSE,
+      'formatter' => [
+        'label' => 'hidden',
+        'type' => 'entity_reference_entity_view',
+      ],
+    ];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function blockForm($form, FormStateInterface $form_state) {
     $config = $this->getConfiguration();
 
