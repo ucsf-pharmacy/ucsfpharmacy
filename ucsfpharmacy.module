@@ -357,3 +357,22 @@ function ucsfpharmacy_preprocess_block(&$variables) {
 		}
 	}
 }
+
+/**
+ * Implements hook_entity_insert().
+ */
+function ucsfpharmacy_entity_insert(EntityInterface $entity) {
+	// Force "Make this content available on all domains" on specific entity types.
+	$bundles  = array(
+								'affiliation',
+								'attribution',
+						  	'gallery',
+						  	'linkable_media',
+						  	'organization',
+						  	'people_list',
+						  	'people',
+							);
+	if(\Drupal::service('module_handler')->moduleExists('domain_access') && in_array($entity->bundle(), $bundles)) {
+  	$entity->set(DOMAIN_ACCESS_ALL_FIELD, 1);
+	}
+}
