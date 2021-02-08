@@ -204,6 +204,13 @@ function ucsfpharmacy_field_widget_form_alter(&$element, FormStateInterface $for
 			$element['#allowed_formats'] = ['transcript'];
 			$element['#after_build'][] = '_ucsfpharmacy_alter_text_format_box';
 			break;
+		case 'field_gallery':
+			// only users with administer node permission may use add existing entity form
+			$user = \Drupal::currentUser();
+			if(!$user->hasPermission('administer node')) {
+				unset($element['actions']['ief_add_existing']);
+			}
+			break;
 	}
 }
 
