@@ -358,21 +358,9 @@ function ucsfpharmacy_preprocess_media_oembed_iframe(&$variables) {
 
 /**
  * Implements template_preprocess_block().
- *
- * Displays only the field item at the selected delta configured in the block.
- * @see Drupal\ucsfpharmacy\Plugin\Block\FieldDeltaBlock
  */
 function ucsfpharmacy_preprocess_block(&$variables) {
-	if($variables['base_plugin_id'] == 'field_delta_block'
-		&& isset($variables['configuration']['delta'])
-	){
-		$selected_delta = $variables['configuration']['delta'];
-		foreach($variables['content']['#items'] as $delta => $item) {
-			if($delta != $selected_delta) {
-				unset($variables['content'][$delta]);
-			}
-		}
-	}
+	// nothing for now
 }
 
 /**

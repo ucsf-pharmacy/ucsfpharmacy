@@ -6,10 +6,7 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\layout_builder\Plugin\Block\FieldBlock;
 
 /**
- * Provides a block that stores configuration for a delta value.
- * The delta value can then be used in a downstream function, such as
- * template_preprocess_block(), to only display the field item at the selected
- * delta.
+ * Provides a block that displays the field item at the selected delta.
  *
  * @Block(
  *   id = "field_delta_block",
@@ -62,4 +59,17 @@ class FieldDeltaBlock extends FieldBlock {
     return parent::blockSubmit($form, $form_state);
   }
 
+  /**
+   * {@inheritdoc}
+   */
+  public function build() {
+    $build = parent::build();
+    $selected_delta = intval($this->getConfiguration()['delta']);
+    for($i = 0; $i < count($build['#items']); $i++) {
+      if($i != $selected_delta) {
+        $build[$i]['#access'] = FALSE;
+      }
+    }
+    return $build;
+  }
 }
