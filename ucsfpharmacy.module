@@ -28,8 +28,6 @@ function ucsfpharmacy_form_alter(&$form, FormStateInterface $form_state, $form_i
         $form['field_gallery']['widget']['entities'][$key]['actions']['ief_entity_remove']['#value'] = t('Remove gallery #' . strval( $key + 1 ) );
       }
     }
-    $form['field_gallery']['widget']['actions']['ief_add']['#value'] = t('Add new gallery');
-    $form['field_gallery']['widget']['actions']['ief_add_existing']['#value'] = t('Add existing gallery');
   }
   // end - 2020.0208 frankfarm: alter gallery buttons to clarify which buttons perform which actions since there are so many buttons in the IEF table.
 }
