@@ -20,6 +20,18 @@ function ucsfpharmacy_form_alter(&$form, FormStateInterface $form_state, $form_i
 	if(!empty($form['status']) && empty($form['status']['#group']) &&  !empty($form['revision_information'])) {
 		$form['status']['#group'] = 'revision_information';
 	}
+  // start - 2020.0208 frankfarm: alter gallery buttons to clarify which buttons perform which actions on what objects since there are so many buttons, actions, and objects in the IEF table.
+  if ($form_id == 'node_page_edit_form') {
+    foreach ($form['field_gallery']['widget']['entities'] as $key => $entity_info) {
+      if (is_numeric($key)) {
+        $form['field_gallery']['widget']['entities'][$key]['actions']['ief_entity_edit']['#value'] = t('Edit gallery #' . strval( $key + 1 ) );
+        $form['field_gallery']['widget']['entities'][$key]['actions']['ief_entity_remove']['#value'] = t('Remove gallery #' . strval( $key + 1 ) );
+      }
+    }
+    $form['field_gallery']['widget']['actions']['ief_add']['#value'] = t('Add new gallery');
+    $form['field_gallery']['widget']['actions']['ief_add_existing']['#value'] = t('Add existing gallery');
+  }
+  // end - 2020.0208 frankfarm: alter gallery buttons to clarify which buttons perform which actions since there are so many buttons in the IEF table.
 }
 
 /**
