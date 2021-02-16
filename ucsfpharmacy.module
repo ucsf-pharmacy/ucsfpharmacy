@@ -190,6 +190,15 @@ function ucsfpharmacy_preprocess_image_formatter(&$variables) {
 }
 
 /**
+ * Implements template_preprocess_media_library_item().
+ */
+function ucsfpharmacy_preprocess_media_library_item(array &$variables) {
+	// add edit media link so users can edit fields attached to media entities
+  $mid = $variables['element']['target_id']['#value'];
+  $variables['content']['rendered_entity']['#suffix'] = '<div class="edit-media-link"><a href="/media/'.$mid.'/edit" target="_blank">edit media</a></div>';
+}
+
+/**
  * Implements template_preprocess_page().
  */
 function ucsfpharmacy_preprocess_page(&$variables) {
