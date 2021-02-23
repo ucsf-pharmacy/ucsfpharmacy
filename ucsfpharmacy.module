@@ -107,10 +107,16 @@ function ucsfpharmacy_form_editor_media_dialog_alter(&$form, FormStateInterface 
 	// Add media item edit link.
 	$form['media_item_edit_link'] = [
 		'#type' => 'item',
-		'#markup' => t('These options apply only to this instance of the media item.<br />
-			To edit global settings (such as crop selections, caption, or other field values): <a target="_blank" href="/media/'.$media->id().'/edit">/media/'.$media->id().'/edit</a>.'),
+		'#markup' => t('These options apply only to this specific appearance of this media item.<br />
+			To edit global settings such as crop selections or alt text: <a target="_blank" href="/media/'.$media->id().'/edit">/media/'.$media->id().'/edit</a>.'),
 		'#weight' => -100,
 	];
+
+	// remove wysiwyg alt override field
+	unset($form['alt']);
+
+	// add caption field explanation
+	$form['caption']['#description'] = 'Provides an area in the wysiwyg beneath this media item for captions.';
 
 	// Add data-size filter options.
 	$form['size'] = array(
