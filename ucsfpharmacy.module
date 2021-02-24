@@ -294,7 +294,7 @@ function ucsfpharmacy_media_presave(EntityInterface $media) {
 			$media->field_media_image = $media->thumbnail;
 		}
 		// if video duration is empty and is youtube, try to get with youtube api
-		if(empty($media->field_duration[0]) && strpos($media->field_media_oembed_video[0]->value, 'youtube.com') !== FALSE) {
+		if(isset($media->field_duration) && empty($media->field_duration[0]) && strpos($media->field_media_oembed_video[0]->value, 'youtube.com') !== FALSE) {
 			$video_url = $media->field_media_oembed_video[0]->value;
 			$values = UrlHelper::parse($video_url);
 			if (!empty($values['query']['v'])
