@@ -1,5 +1,7 @@
 <?php
 
+use Drupal\Component\Utility\Html;
+use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Ajax\AjaxResponse;
 use Drupal\Core\Ajax\InvokeCommand;
 use Drupal\Core\Ajax\OpenOffCanvasDialogCommand;
@@ -10,7 +12,6 @@ use Drupal\editor\Entity\Editor;
 use Drupal\image\Entity\ImageStyle;
 use Drupal\media\Entity\Media;
 use Drupal\media\IFrameMarkup;
-use Drupal\Component\Utility\Html;
 
 /**
  * Implements hook_form_alter().
@@ -20,16 +21,16 @@ function ucsfpharmacy_form_alter(&$form, FormStateInterface $form_state, $form_i
 	if(!empty($form['status']) && empty($form['status']['#group']) &&  !empty($form['revision_information'])) {
 		$form['status']['#group'] = 'revision_information';
 	}
-  // start - 2020.0208 frankfarm: alter gallery buttons to clarify which buttons perform which actions on what objects since there are so many buttons, actions, and objects in the IEF table.
-  if ($form_id == 'node_page_edit_form') {
-    foreach ($form['field_gallery']['widget']['entities'] as $key => $entity_info) {
-      if (is_numeric($key)) {
-        $form['field_gallery']['widget']['entities'][$key]['actions']['ief_entity_edit']['#value'] = t('Edit gallery #' . strval( $key + 1 ) );
-        $form['field_gallery']['widget']['entities'][$key]['actions']['ief_entity_remove']['#value'] = t('Remove gallery #' . strval( $key + 1 ) );
-      }
-    }
-  }
-  // end - 2020.0208 frankfarm: alter gallery buttons to clarify which buttons perform which actions since there are so many buttons in the IEF table.
+	// start - 2020.0208 frankfarm: alter gallery buttons to clarify which buttons perform which actions on what objects since there are so many buttons, actions, and objects in the IEF table.
+	if ($form_id == 'node_page_edit_form') {
+		foreach ($form['field_gallery']['widget']['entities'] as $key => $entity_info) {
+			if (is_numeric($key)) {
+				$form['field_gallery']['widget']['entities'][$key]['actions']['ief_entity_edit']['#value'] = t('Edit gallery #' . strval( $key + 1 ) );
+				$form['field_gallery']['widget']['entities'][$key]['actions']['ief_entity_remove']['#value'] = t('Remove gallery #' . strval( $key + 1 ) );
+			}
+		}
+	}
+	// end - 2020.0208 frankfarm: alter gallery buttons to clarify which buttons perform which actions since there are so many buttons in the IEF table.
 }
 
 /**
@@ -40,18 +41,18 @@ function ucsfpharmacy_form_node_article_form_alter(&$form, FormStateInterface $f
 	if(!empty($form['field_url'])) {
 		$form['field_url']['meta_scraper'] = [
 			'#type' => 'button',
-	    '#value' => t('Scrape metadata from URL'),
-	    '#limit_validation_errors' => array(),
-		  // '#attributes' => ['onclick' => 'return false;'],
-		  '#attached' => [
-		    'library' => ['ucsfpharmacy/meta_scraper'],
-		  ],
-			'#ajax' => [
-			  'callback' => 'ucsfpharmacy_meta_scraper',
-			  'event' => 'click',
-			  'disable-refocus' => FALSE,
+			'#value' => t('Scrape metadata from URL'),
+			'#limit_validation_errors' => array(),
+			// '#attributes' => ['onclick' => 'return false;'],
+			'#attached' => [
+				'library' => ['ucsfpharmacy/meta_scraper'],
 			],
-	  ];
+			'#ajax' => [
+				'callback' => 'ucsfpharmacy_meta_scraper',
+				'event' => 'click',
+				'disable-refocus' => FALSE,
+			],
+		];
 	}
 }
 
@@ -66,14 +67,14 @@ function ucsfpharmacy_meta_scraper(&$form, FormStateInterface $form_state) {
 			$metas = $dom->getElementsByTagName('meta');
 			foreach ($metas as $meta){
 				if($property = $meta->getAttribute('property')) {
-			    $data[$property] = $meta->getAttribute('content');
-			  }
+					$data[$property] = $meta->getAttribute('content');
+				}
 			}
-		  $response = new AjaxResponse();
-		  $response->addCommand(new InvokeCommand(NULL, 'metaScraperAjaxCallback', [$data]));
+			$response = new AjaxResponse();
+			$response->addCommand(new InvokeCommand(NULL, 'metaScraperAjaxCallback', [$data]));
 
-		  // $data is passed to js/meta_scraper.js for client-side processing.
-		  return $response;
+			// $data is passed to js/meta_scraper.js for client-side processing.
+			return $response;
 		}
 	}
 	// On empty or error, return empty markup so it does nothing.
@@ -200,8 +201,8 @@ function ucsfpharmacy_preprocess_image_formatter(&$variables) {
  */
 function ucsfpharmacy_preprocess_media_library_item(array &$variables) {
 	// add edit media link so users can edit fields attached to media entities
-  $mid = $variables['element']['target_id']['#value'];
-  $variables['content']['rendered_entity']['#suffix'] = '<div class="edit-media-link"><a href="/media/'.$mid.'/edit" target="_blank">edit media</a></div>';
+	$mid = $variables['element']['target_id']['#value'];
+	$variables['content']['rendered_entity']['#suffix'] = '<div class="edit-media-link"><a href="/media/'.$mid.'/edit" target="_blank">edit media</a></div>';
 }
 
 /**
@@ -292,6 +293,48 @@ function ucsfpharmacy_media_presave(EntityInterface $media) {
 		if(empty($media->field_media_image[0])) {
 			$media->field_media_image = $media->thumbnail;
 		}
+		// if video duration is empty and is youtube, try to get with youtube api
+		if(empty($media->field_duration[0]) && strpos($media->field_media_oembed_video[0]->value, 'youtube.com') !== FALSE) {
+			$video_url = $media->field_media_oembed_video[0]->value;
+			$values = UrlHelper::parse($video_url);
+			if (!empty($values['query']['v'])
+				&& $duration = _ucsfpharmacy_youtube_get_video_length($values['query']['v'])
+			) {
+				$media->field_duration->setValue(['duration'=>$duration]);
+			}
+		}
+	}
+}
+
+/**
+ * Helper function to get YouTube video duration.
+ * @see ucsfpharmacy_media_presave().
+ * @todo move api key to file outside web docroot
+ */
+function _ucsfpharmacy_youtube_get_video_length($id = NULL) {
+	if(empty($id)) {
+		return '';
+	}
+	$client = \Drupal::httpClient();
+	$request = $client->request('GET', 'https://www.googleapis.com/youtube/v3/videos', [
+		'query' => [
+			'key'=>'AIzaSyC2gCkFvOL52VUEHB-7An3V8VsnymhOVyQ',
+			'part'=>'contentDetails',
+			'id'=>$id,
+		]
+	]);
+	try {
+		$response = json_decode($request->getBody());
+		if(empty($response->items[0]->contentDetails->duration)) {
+			return '';
+		}
+		$duration = $response->items[0]->contentDetails->duration;
+		// $interval = new DateInterval($duration);
+		// $length = trim($interval->format('%H:%I:%S'));
+		// return $length;
+		return $duration;
+	} catch (Exception $e) {
+		return '';
 	}
 }
 
@@ -317,12 +360,12 @@ function ucsfpharmacy_editor_js_settings_alter(array &$settings) {
  * Implements hook_theme().
  */
 function ucsfpharmacy_theme($existing, $type, $theme, $path) {
-  return [
-    'field__media__field_transcript' => [
-      'template' => 'field--media--field-transcript',
-      'base hook' => 'field',
-    ],
-  ];
+	return [
+		'field__media__field_transcript' => [
+			'template' => 'field--media--field-transcript',
+			'base hook' => 'field',
+		],
+	];
 }
 
 /**
@@ -347,16 +390,16 @@ function ucsfpharmacy_preprocess_media(array &$variables) {
 			// special alt string designation that should output as empty string for images
 			$media->field_media_image->alt = '';
 
-	  } elseif ( !empty( $alt_tag ) ){
-	    // If an existing alt tag doesn't already have a period at the end, add one. This provides a subtle pause that is friendlier for screen reader users and is therefore better for accessibility.
+		} elseif ( !empty( $alt_tag ) ){
+			// If an existing alt tag doesn't already have a period at the end, add one. This provides a subtle pause that is friendlier for screen reader users and is therefore better for accessibility.
 			$new_alt_tag = substr( $alt_tag , -1 ) == '.' ? $alt_tag : $alt_tag . '.';
 
-	    // If an existing alt tag begins with image of, photo of, picture of, or video of, remove it. This removes redundancy for screen reader users and is therefore better for accessibility.
+			// If an existing alt tag begins with image of, photo of, picture of, or video of, remove it. This removes redundancy for screen reader users and is therefore better for accessibility.
 			$new_alt_tag = preg_replace( "/(image|photo|picture|video)( of)?(: )? ?/i" , '' , $new_alt_tag );
 
 			$media->field_media_image->alt = $new_alt_tag;
 		}
-  }
+	}
 }
 
 /**
@@ -366,9 +409,9 @@ function ucsfpharmacy_preprocess_media(array &$variables) {
  * @see https://www.drupal.org/project/drupal/issues/3043821#comment-13423651
  */
 function ucsfpharmacy_preprocess_media_oembed_iframe(&$variables) {
-  if (strpos((string) $variables['media'], 'youtube.com') !== FALSE) {
-    $variables['media'] = IFrameMarkup::create(str_replace('youtube.com/', 'youtube-nocookie.com/', $variables['media']));
-  }
+	if (strpos((string) $variables['media'], 'youtube.com') !== FALSE) {
+		$variables['media'] = IFrameMarkup::create(str_replace('youtube.com/', 'youtube-nocookie.com/', $variables['media']));
+	}
 }
 
 /**
@@ -386,13 +429,13 @@ function ucsfpharmacy_entity_insert(EntityInterface $entity) {
 	$bundles  = array(
 								'affiliation',
 								'attribution',
-						  	'gallery',
-						  	'linkable_media',
-						  	'organization',
-						  	'people_list',
-						  	'people',
+								'gallery',
+								'linkable_media',
+								'organization',
+								'people_list',
+								'people',
 							);
 	if(\Drupal::service('module_handler')->moduleExists('domain_access') && in_array($entity->bundle(), $bundles)) {
-  	$entity->set(DOMAIN_ACCESS_ALL_FIELD, 1);
+		$entity->set(DOMAIN_ACCESS_ALL_FIELD, 1);
 	}
 }
