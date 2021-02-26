@@ -168,7 +168,7 @@ function ucsfpharmacy_preprocess_field(&$variables) {
 	// Change am/pm to a.m./p.m. to adhere to SOP style guide
 	if($element['#formatter'] == 'timestamp') {
 		foreach($element['#items'] as $i => $item) {
-			$variables['items'][$i]['content']['#markup'] = str_ireplace(array('am','pm'), array('A.M.','P.M.'), $element[$i]['#markup']);
+			$variables['items'][$i]['content']['#markup'] = str_ireplace(array('am','pm'), array('a.m.','p.m.'), $element[$i]['#markup']);
 		}
 	}
 }
