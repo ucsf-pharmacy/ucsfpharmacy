@@ -34,6 +34,15 @@ function ucsfpharmacy_form_alter(&$form, FormStateInterface $form_state, $form_i
 }
 
 /**
+ * Implements hook_form_form_id_alter() for field_config_edit_form.
+ */
+function ucsfpharmacy_form_field_config_edit_form_alter(&$form, FormStateInterface $form_state) {
+	if(!empty($form['settings']['handler']['handler_settings']['target_bundles'])) {
+		$form['settings']['handler']['handler_settings']['target_bundles']['#required'] = FALSE;
+	}
+}
+
+/**
  * Implements hook_form_form_id_alter() for node_article_form.
  */
 function ucsfpharmacy_form_node_article_form_alter(&$form, FormStateInterface $form_state) {
