@@ -316,6 +316,50 @@ function ucsfpharmacy_media_presave(EntityInterface $media) {
 }
 
 /**
+ * Implements hook_entity_type_presave() for node.
+ */
+function ucsfpharmacy_node_presave(EntityInterface $entity) {
+  if(\Drupal::service('module_handler')->moduleExists('ucsf_eds_profiles')
+  	&& $email = @$entity->field_person_email->value
+  ) {
+  	$pharmacy_person = @$entity->field_ucsfphps->entity;
+    $edsprofile = @$entity->field_ucsfedsprofiles->entity;
+    // Stop and do nothing if eds/profile node matches person email.
+    if($edsprofile && $edsprofile->label() == $email) {
+      return;
+    }
+    // Look up existing eds/profile node, or create a new one, and set as this persons eds/profile.
+    $matches = \Drupal::entityTypeManager()->getStorage('node')->loadByProperties(['type' => 'ucsf_eds_profiles', 'title' => $email]);
+    $nid = key($matches);
+    if(empty($matches)) {
+      try {
+        $edsprofile = Node::create(['type' => 'ucsf_eds_profiles', 'title' => $email]);
+        $nid = (ucsf_eds_profiles_node_sync($edsprofile)) ? $edsprofile->id() : null;
+      } catch(Exception $e) {
+        dpm($e->getMessage());
+      }
+    }
+    // Set eds/profile ref to valid eds/profile node.
+    if($nid) {
+      $entity->set('field_ucsfedsprofiles', ['target_id' => $nid]);
+      if($pharmacy_person) {
+        $pharmacy_person->set('field_ucsfedsprofiles', ['target_id' => $nid]);
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_inline_entity_form_entity_form_alter().
+ */
+function ucsfpharmacy_inline_entity_form_entity_form_alter(array &$entity_form, FormStateInterface &$form_state) {
+  $input = $form_state->getUserInput();
+  $title = $input['title'][0]['value'];
+  $entity_form['title']['widget'][0]['value']['#default_value'] = $title;
+  $entity_form['title']['widget'][0]['value']['#attributes']['readonly'] = TRUE;
+}
+
+/**
  * Helper function to get YouTube video duration.
  * @see ucsfpharmacy_media_presave().
  * @todo move api key to file outside web docroot
