@@ -1,0 +1,206 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.ucsfpharmacy_person.field_ucsfphps_affiliations
+    - field.field.node.ucsfpharmacy_person.field_ucsfphps_clinicalexpertise
+    - field.field.node.ucsfpharmacy_person.field_ucsfphps_degrees
+    - field.field.node.ucsfpharmacy_person.field_ucsfphps_deptovrd
+    - field.field.node.ucsfpharmacy_person.field_ucsfphps_dotitle
+    - field.field.node.ucsfpharmacy_person.field_ucsfedsprofiles
+    - field.field.node.ucsfpharmacy_person.field_ucsfphps_email
+    - field.field.node.ucsfpharmacy_person.field_ucsfphps_files
+    - field.field.node.ucsfpharmacy_person.field_ucsfphps_fullname
+    - field.field.node.ucsfpharmacy_person.field_ucsfphps_headshotphoto
+    - field.field.node.ucsfpharmacy_person.field_ucsfphps_licensurecert
+    - field.field.node.ucsfpharmacy_person.field_ucsfphps_miscurls
+    - field.field.node.ucsfpharmacy_person.field_ucsfphps_personsubtype
+    - field.field.node.ucsfpharmacy_person.field_ucsfphps_persontype
+    - field.field.node.ucsfpharmacy_person.field_ucsfphps_persontypefull
+    - field.field.node.ucsfpharmacy_person.field_ucsfphps_researcharea
+    - field.field.node.ucsfpharmacy_person.field_ucsfphps_researchexpertise
+    - field.field.node.ucsfpharmacy_person.field_ucsfphps_siteurls
+    - field.field.node.ucsfpharmacy_person.field_ucsfphps_titleovrd
+    - field.field.node.ucsfpharmacy_person.field_ucsfphps_whatido
+    - node.type.ucsfpharmacy_person
+  module:
+    - file
+    - link
+    - user
+id: node.ucsfpharmacy_person.default
+targetEntityType: node
+bundle: ucsfpharmacy_person
+mode: default
+content:
+  field_ucsfphps_affiliations:
+    type: entity_reference_label
+    weight: 0
+    region: content
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+  field_ucsfphps_clinicalexpertise:
+    type: string
+    weight: 0
+    region: content
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+  field_ucsfphps_degrees:
+    type: entity_reference_label
+    weight: 0
+    region: content
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+  field_ucsfphps_deptovrd:
+    type: string
+    weight: 0
+    region: content
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+  field_ucsfphps_dotitle:
+    type: string
+    weight: 0
+    region: content
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+  field_ucsfedsprofiles:
+    type: entity_reference_label
+    weight: 0
+    region: content
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+  field_ucsfphps_email:
+    type: basic_string
+    weight: 0
+    region: content
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+  field_ucsfphps_files:
+    type: file_default
+    weight: 0
+    region: content
+    label: above
+    settings:
+      use_description_as_link_text: true
+    third_party_settings: {  }
+  field_ucsfphps_fullname:
+    type: string
+    weight: 0
+    region: content
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+  field_ucsfphps_headshotphoto:
+    type: entity_reference_label
+    weight: 0
+    region: content
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+  field_ucsfphps_licensurecert:
+    type: string
+    weight: 0
+    region: content
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+  field_ucsfphps_miscurls:
+    type: link
+    weight: 0
+    region: content
+    label: above
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
+    third_party_settings: {  }
+  field_ucsfphps_personsubtype:
+    type: string
+    weight: 0
+    region: content
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+  field_ucsfphps_persontype:
+    type: string
+    weight: 0
+    region: content
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+  field_ucsfphps_persontypefull:
+    type: string
+    weight: 0
+    region: content
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+  field_ucsfphps_researcharea:
+    type: string
+    weight: 0
+    region: content
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+  field_ucsfphps_researchexpertise:
+    type: string
+    weight: 0
+    region: content
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+  field_ucsfphps_siteurls:
+    type: link
+    weight: 0
+    region: content
+    label: above
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
+    third_party_settings: {  }
+  field_ucsfphps_titleovrd:
+    type: string
+    weight: 0
+    region: content
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+  field_ucsfphps_whatido:
+    type: basic_string
+    weight: 0
+    region: content
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+  links:
+    weight: 100
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden: {  }

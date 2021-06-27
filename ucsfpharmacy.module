@@ -12,6 +12,7 @@ use Drupal\editor\Entity\Editor;
 use Drupal\image\Entity\ImageStyle;
 use Drupal\media\Entity\Media;
 use Drupal\media\IFrameMarkup;
+use Drupal\node\Entity\Node;
 
 /**
  * Implements hook_form_alter().
@@ -319,34 +320,52 @@ function ucsfpharmacy_media_presave(EntityInterface $media) {
  * Implements hook_entity_type_presave() for node.
  */
 function ucsfpharmacy_node_presave(EntityInterface $entity) {
+
+	// Sets a persons eds/profile reference automatically by matching a persons
+	// email to an eds/profile node label. (The label value is in email format.)
+	// If a pharmacy person entity reference field exists, set its eds/profile
+	// reference to the same eds/profile node.
   if(\Drupal::service('module_handler')->moduleExists('ucsf_eds_profiles')
   	&& $email = @$entity->field_person_email->value
+  	&& $entity->hasField('field_ucsfedsprofiles')
   ) {
-  	$pharmacy_person = @$entity->field_ucsfphps->entity;
-    $edsprofile = @$entity->field_ucsfedsprofiles->entity;
-    // Stop and do nothing if eds/profile node matches person email.
-    if($edsprofile && $edsprofile->label() == $email) {
-      return;
-    }
-    // Look up existing eds/profile node, or create a new one, and set as this persons eds/profile.
-    $matches = \Drupal::entityTypeManager()->getStorage('node')->loadByProperties(['type' => 'ucsf_eds_profiles', 'title' => $email]);
-    $nid = key($matches);
-    if(empty($matches)) {
-      try {
-        $edsprofile = Node::create(['type' => 'ucsf_eds_profiles', 'title' => $email]);
-        $nid = (ucsf_eds_profiles_node_sync($edsprofile)) ? $edsprofile->id() : null;
-      } catch(Exception $e) {
-        dpm($e->getMessage());
-      }
-    }
-    // Set eds/profile ref to valid eds/profile node.
-    if($nid) {
-      $entity->set('field_ucsfedsprofiles', ['target_id' => $nid]);
-      if($pharmacy_person) {
-        $pharmacy_person->set('field_ucsfedsprofiles', ['target_id' => $nid]);
-      }
-    }
-  }
+  	// Eds/profile node or null.
+    $eds = @$entity->field_ucsfedsprofiles->entity;
+  	// Node id or null.
+  	$eds_id = @$eds->id();
+
+  	// Sync eds/profile field.
+    if($eds == null || $eds->label() != $email) {
+	    $matches = \Drupal::entityTypeManager()->getStorage('node')->loadByProperties(['type' => 'ucsf_eds_profiles', 'title' => $email]);
+	    // Node id if there is a match or null if no matches.
+	    $eds_id = key($matches);
+	    if($eds_id == null) {
+	      try {
+	        $eds = Node::create(['type' => 'ucsf_eds_profiles', 'title' => $email]);
+	        // ucsf_eds_profiles_node_sync() does api calling to sync data.
+	        $eds_id = (ucsf_eds_profiles_node_sync($eds)) ? $eds->id() : null;
+	      } catch(Exception $e) {
+	        dpm($e->getMessage());
+	      }
+	    }
+	    // Set eds/profile entity ref field to valid node id.
+	    if($eds_id) {
+	      $entity->set('field_ucsfedsprofiles', ['target_id' => $eds_id]);
+	    }
+	  }
+
+  	// Sync nested pharmacy persons eds/profile field.
+  	if($eds_id
+  		&& $entity->hasField('field_ucsfphps')
+  		&& $pharmacy_person = @$entity->field_ucsfphps->entity
+  	) {
+  		$pharmacy_person_eds = @$pharmacy_person->field_ucsfedsprofiles->entity;
+  		if($pharmacy_person_eds == null || $pharmacy_person_eds->id() != $eds_id) {
+  			$pharmacy_person->set('field_ucsfedsprofiles', ['target_id' => $eds_id]);
+  			@$pharmacy_person->save();
+  		}
+  	}
+	}
 }
 
 /**

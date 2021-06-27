@@ -1,0 +1,10 @@
+name: UCSF Pharmacy Person
+type: module
+description: "Additional fields and customizations for the Person content type specific to UCSF School of Pharmacy."
+core_version_requirement: ^8.8 || ^9
+dependencies:
+  - ucsf_eds_profiles
+  - drupal:existing_values_autocomplete_widget
+  - drupal:file
+  - drupal:link
+  - drupal:media_library

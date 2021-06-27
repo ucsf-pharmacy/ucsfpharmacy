@@ -1,0 +1,27 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_ucsfphps_siteurls
+    - node.type.ucsfpharmacy_person
+  module:
+    - custom_add_another
+    - link
+third_party_settings:
+  custom_add_another:
+    custom_add_another: ''
+    custom_remove: ''
+id: node.ucsfpharmacy_person.field_ucsfphps_siteurls
+field_name: field_ucsfphps_siteurls
+entity_type: node
+bundle: ucsfpharmacy_person
+label: 'Lab site or research page link'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  link_type: 17
+  title: 1
+field_type: link

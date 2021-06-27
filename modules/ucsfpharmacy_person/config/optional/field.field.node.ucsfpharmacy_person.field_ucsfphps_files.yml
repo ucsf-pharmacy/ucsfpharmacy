@@ -1,0 +1,31 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_ucsfphps_files
+    - node.type.ucsfpharmacy_person
+  module:
+    - custom_add_another
+    - file
+third_party_settings:
+  custom_add_another:
+    custom_add_another: ''
+    custom_remove: ''
+id: node.ucsfpharmacy_person.field_ucsfphps_files
+field_name: field_ucsfphps_files
+entity_type: node
+bundle: ucsfpharmacy_person
+label: 'File attachments'
+description: 'Avoid uploading a CV in PDF form because PDF files are harder to make accessible to persons with disabilities. Instead, confirm that this page links to the person''s UCSF Profiles profile, then edit that and keep it current.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  file_directory: person/files
+  file_extensions: 'txt doc jpg gif png zip gz pdf docx'
+  max_filesize: ''
+  description_field: true
+  handler: 'default:file'
+  handler_settings: {  }
+field_type: file

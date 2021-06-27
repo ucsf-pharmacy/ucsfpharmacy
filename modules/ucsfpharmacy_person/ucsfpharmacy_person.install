@@ -1,0 +1,18 @@
+<?php
+
+use Drupal\field\Entity\FieldStorageConfig;
+use Drupal\field\Entity\FieldConfig;
+
+/**
+ * Implements hook_install().
+ */
+function ucsfpharmacy_person_install() {
+  // nothing yet
+}
+
+/**
+ * Implements hook_uninstall().
+ */
+function ucsfpharmacy_person_uninstall() {
+  // nothing yet
+}
