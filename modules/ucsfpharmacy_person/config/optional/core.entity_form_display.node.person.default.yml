@@ -1,0 +1,71 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.person.field_person_email
+    - field.field.node.person.field_ucsfedsprofiles
+    - field.field.node.person.field_ucsfphps
+    - node.type.person
+  module:
+    - inline_entity_form
+id: node.person.default
+targetEntityType: node
+bundle: person
+mode: default
+content:
+  field_person_email:
+    weight: 26
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: email_default
+    region: content
+  field_ucsfedsprofiles:
+    weight: 28
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
+    region: content
+  field_ucsfphps:
+    weight: 29
+    settings:
+      form_mode: default
+      revision: true
+      label_singular: ''
+      label_plural: ''
+      collapsible: true
+      collapsed: true
+      allow_new: true
+      allow_existing: true
+      match_operator: CONTAINS
+      override_labels: false
+      allow_duplicate: false
+    third_party_settings: {  }
+    type: inline_entity_form_complex
+    region: content
+  status:
+    type: boolean_checkbox
+    settings:
+      display_label: true
+    weight: 3
+    region: content
+    third_party_settings: {  }
+  title:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+hidden:
+  created: true
+  path: true
+  promote: true
+  sticky: true
+  uid: true
