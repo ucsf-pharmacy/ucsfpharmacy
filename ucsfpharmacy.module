@@ -333,6 +333,7 @@ function ucsfpharmacy_node_presave(EntityInterface $entity) {
     $eds = @$entity->field_ucsfedsprofiles->entity;
   	// Node id or null.
   	$eds_id = ($eds) ? @$eds->id() : null;
+    $email = @$entity->field_person_email->value;
 
   	// Sync eds/profile field.
     if($eds == null || $eds->label() != $email) {
