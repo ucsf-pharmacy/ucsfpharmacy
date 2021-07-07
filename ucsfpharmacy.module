@@ -326,7 +326,7 @@ function ucsfpharmacy_node_presave(EntityInterface $entity) {
 	// If a pharmacy person entity reference field exists, set its eds/profile
 	// reference to the same eds/profile node.
   if(\Drupal::service('module_handler')->moduleExists('ucsf_eds_profiles')
-  	&& $email = @$entity->field_person_email->value
+  	&& !empty($entity->field_person_email->value)
   	&& $entity->hasField('field_ucsfedsprofiles')
   ) {
   	// Eds/profile node or null.
